@@ -1,0 +1,124 @@
+name: EtriaBending
+version: 1.0
+main: com.etriacraft.etriabending.EtriaBending
+commands:
+  chunkfix:
+    aliases: [fixchunk, reloadchunk]
+    usage: /<command>
+  clear:
+    aliases: [clearinventory]
+    usage: /<command>
+  copyinv:
+    aliases: [copyinventory]
+    usage: /<command>
+  item:
+    aliases: [i]
+    usage: /<command>
+  iteminfo:
+    aliases: [itemid]
+    usage: /<command>
+  setspawn:
+    usage: /<command>
+  spawnmob:
+    usage: /<command>
+  weather:
+    usage: /<command>
+  # Player Suite
+  gamemode:
+    aliases: [gm]
+    usage: /<command>
+  getpos:
+    aliases: [position]
+    usage: /<command>
+  god:
+    aliases: [jesus, buddha]
+    usage: /<command>
+  hat:
+    aliases: [helmet]
+    usage: /<command>
+  help:
+    usage: /<command>
+  vanish:
+    usage: /<command>
+  workbench:
+    aliases: [wb]
+    usage: /<command>
+  tp:
+    aliases: [teleport]
+    usage: /<command>
+  tpa:
+    aliases: [call, tpr]
+    usage: /<command>
+  tphere:
+    aliases: [bring, summon]
+    usage: /<command>
+  spawn:
+    usage: /<command>
+  home:
+    usage: /<command>
+  sethome:
+    usage: /<command>
+  delhome:
+    usage: /<command>
+    aliases: [deletehome]
+  listhomes:
+    usage: /<command>
+    aliases: [homes]
+  motd:
+    usage: /<command>
+  message:
+    aliases: [pm, msg, m, send]
+    usage: /<command>
+  reply:
+    aliases: [r]
+    usage: /<command>
+  modchat:
+    aliases: [mc, ac, adminchat]
+    usage: /<command>
+  backpack:
+    aliases: [bp, pack]
+    usage: /<command>
+permissions:
+  eb.admin:
+    default: false
+    children:
+      eb.chunkfix: true
+      eb.clear: true
+      eb.copyinv: true
+      eb.item: true
+      eb.iteminfo: true
+      eb.setspawn: true
+      eb.spawnmob: true
+      eb.weather: true
+      # Player Suite
+      eb.help: true
+      eb.hat: true
+      eb.god: true
+      eb.god.others: true
+      eb.getpos: true
+      eb.gamemode: true
+      eb.vanish: true
+      eb.vanish.seehidden: true
+      eb.vanish.alert: true
+      eb.workbench: true
+      eb.tpa.answer: true
+      eb.tpa: true
+      eb.tp: true
+      eb.tphere: true
+      eb.spawn: true
+      eb.delhome: true
+      eb.home: true
+      eb.home.others: true
+      eb.listhomes: true
+      eb.listhomes.others: true
+      eb.sethome: true
+      eb.sethome.named: true
+      eb.motd: true
+      eb.modchat: true
+      eb.reply: true
+      eb.msg: true
+      eb.msg.spy: true
+      ec.backpack: true
+      ec.backpack.others: true
+      ec.backpack.size.6: true
+      ec.backpack.protected: true

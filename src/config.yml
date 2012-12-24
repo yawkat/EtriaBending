@@ -1,0 +1,10 @@
+sqlitedb: etriabending.db
+messaging:
+  motd:
+  - Welcome to the EtriaCraft Bending Server.
+  - Testing.
+  firstjoin: '&3Welcome &7<name> &3to the server!'
+  joinmessage: '&7<name> &3has joined the game.'
+  leavemessage: '&7<name> &3has left the game.'
+  modchat: '&c[&aModChat&c] &c<name>&7:&a <message>'
+PlayerHomeLimit: 300
