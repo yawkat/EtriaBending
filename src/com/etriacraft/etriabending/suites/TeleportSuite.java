@@ -49,10 +49,6 @@ public class TeleportSuite {
 
 		exe = new CommandExecutor() {
 			public boolean onCommand(CommandSender s, Command c, String label, String[] args) {
-				if (!s.hasPermission("eb.tpa")) {
-					s.sendMessage("§cYou don't have permission for that!");
-					return true;
-				} 
 				String player = args[0];
 				final Player p;
 				if (args[0].equalsIgnoreCase("accept") || args[0].equalsIgnoreCase("y")) {
