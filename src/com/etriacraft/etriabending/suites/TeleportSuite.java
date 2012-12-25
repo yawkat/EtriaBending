@@ -53,75 +53,75 @@ public class TeleportSuite {
 					s.sendMessage("§cYou don't have permission for that!");
 					return true;
 				} 
-					String player = args[0];
-					final Player p;
-					if (args[0].equalsIgnoreCase("accept") || args[0].equalsIgnoreCase("y")) {
-						if (!s.hasPermission("eb.tpa.answer")) {
-							s.sendMessage("§cYou don't have permission to do that!");
-							return true;
-						}
-						if (!tpRequestDb.containsKey(s.getName()) || tpRequestDb.get(s.getName()).isEmpty()) {
-							s.sendMessage("§cYou have no teleport requests pending.");
-							return true;
-						}
-						if (args.length < 2) {
-							player = tpRequestDb.get(s.getName()).getLast();
-						} else {
-							player = args[1];
-						}
-
-						p = Bukkit.getPlayer(player);
-						if (p == null) {
-							s.sendMessage("§cThat player is no longer online.");
-							return true;
-						}
-						if (tpRequestDb.get(s.getName()).contains(p.getName())) {
-							PlayerUtils.teleport(p, ((Player) s).getLocation());
-							p.sendMessage("§e" + s.getName() + "§aaccepted your teleport request");
-							s.sendMessage("§aYou accepted the teleport request from§e " + p.getName());
-							tpRequestDb.get(s.getName()).remove(p.getName());
-						} else s.sendMessage("§cThis player hasn't request teleport permission from you.");
-					} else if (args[0].equalsIgnoreCase("decline") || args[0].equalsIgnoreCase("n")) {
-						if (!s.hasPermission("eb.tpa.answer")) {
-							s.sendMessage("§cYou don't have permission to do that!");
-							return true;
-						}
-						if (args.length < 2) return false;
-						player = args[1];
-						p = Bukkit.getPlayer(player);
-						if (p == null) {
-							s.sendMessage("§cThat player is no longer online.");
-							return true;
-						}
-						if (!tpRequestDb.containsKey(s.getName()) || tpRequestDb.get(s.getName()).contains(p.getName())) {
-							p.sendMessage("§cYour teleport request to §7" + s.getName() + " §cwas declined.");
-							tpRequestDb.get(s.getName()).remove(p.getName());
-							s.sendMessage("§aDenied§e " + player + "'s §ateleport request.");
-						} else s.sendMessage("§cThis player hasn't requested teleport permission from you.");
-					} else {
-						if (!s.hasPermission("eb.tpa")) {
-							s.sendMessage("§cYou don't have permission to do that!");
-						} else {
-							p = Bukkit.getPlayer(player);
-							if (p == null) {
-								s.sendMessage("§cThat player is not online.");
-								return true;
-							}
-							if (!tpRequestDb.containsKey(p.getName())) {
-								tpRequestDb.put(p.getName(), new LinkedList<String>());
-							}
-
-							tpRequestDb.get(p.getName()).add(s.getName());
-							s.sendMessage("§aYou have sent a teleport request to§e " + p.getName());
-							p.sendMessage("§aYou have received a teleport request from§e " + s.getName());
-							p.sendMessage("§aDo §e/tpa accept " + s.getName() + " §ato accept, or §e/tpa decline " + s.getName() + " §ato deny");
-						}
+				String player = args[0];
+				final Player p;
+				if (args[0].equalsIgnoreCase("accept") || args[0].equalsIgnoreCase("y")) {
+					if (!s.hasPermission("eb.tpa.answer")) {
+						s.sendMessage("§cYou don't have permission to do that!");
 						return true;
 					}
+					if (!tpRequestDb.containsKey(s.getName()) || tpRequestDb.get(s.getName()).isEmpty()) {
+						s.sendMessage("§cYou have no teleport requests pending.");
+						return true;
+					}
+					if (args.length < 2) {
+						player = tpRequestDb.get(s.getName()).getLast();
+					} else {
+						player = args[1];
+					}
+
+					p = Bukkit.getPlayer(player);
+					if (p == null) {
+						s.sendMessage("§cThat player is no longer online.");
+						return true;
+					}
+					if (tpRequestDb.get(s.getName()).contains(p.getName())) {
+						PlayerUtils.teleport(p, ((Player) s).getLocation());
+						p.sendMessage("§e" + s.getName() + "§aaccepted your teleport request");
+						s.sendMessage("§aYou accepted the teleport request from§e " + p.getName());
+						tpRequestDb.get(s.getName()).remove(p.getName());
+					} else s.sendMessage("§cThis player hasn't request teleport permission from you.");
+				} else if (args[0].equalsIgnoreCase("decline") || args[0].equalsIgnoreCase("n")) {
+					if (!s.hasPermission("eb.tpa.answer")) {
+						s.sendMessage("§cYou don't have permission to do that!");
+						return true;
+					}
+					if (args.length < 2) return false;
+					player = args[1];
+					p = Bukkit.getPlayer(player);
+					if (p == null) {
+						s.sendMessage("§cThat player is no longer online.");
+						return true;
+					}
+					if (!tpRequestDb.containsKey(s.getName()) || tpRequestDb.get(s.getName()).contains(p.getName())) {
+						p.sendMessage("§cYour teleport request to §7" + s.getName() + " §cwas declined.");
+						tpRequestDb.get(s.getName()).remove(p.getName());
+						s.sendMessage("§aDenied§e " + player + "'s §ateleport request.");
+					} else s.sendMessage("§cThis player hasn't requested teleport permission from you.");
+				} else {
+					if (!s.hasPermission("eb.tpa")) {
+						s.sendMessage("§cYou don't have permission to do that!");
+					} else {
+						p = Bukkit.getPlayer(player);
+						if (p == null) {
+							s.sendMessage("§cThat player is not online.");
+							return true;
+						}
+						if (!tpRequestDb.containsKey(p.getName())) {
+							tpRequestDb.put(p.getName(), new LinkedList<String>());
+						}
+
+						tpRequestDb.get(p.getName()).add(s.getName());
+						s.sendMessage("§aYou have sent a teleport request to§e " + p.getName());
+						p.sendMessage("§aYou have received a teleport request from§e " + s.getName());
+						p.sendMessage("§aDo §e/tpa accept " + s.getName() + " §ato accept, or §e/tpa decline " + s.getName() + " §ato deny");
+					}
+					return true;
+				}
 				return true;
 			}
 		}; tpa.setExecutor(exe);
-		
+
 		exe = new CommandExecutor() {
 			@Override
 			public boolean onCommand(CommandSender s, Command c, String label, String[] args) {
@@ -154,14 +154,14 @@ public class TeleportSuite {
 						loc = p.getLocation();
 						s.sendMessage("§aTeleport to§e " + p.getName());
 					}
-					
+
 					PlayerUtils.teleport((Player) s, loc);
 					return true;
 				}
 				return true;
 			}
 		}; tp.setExecutor(exe);
-		
+
 		exe = new CommandExecutor() {
 			@Override
 			public boolean onCommand(CommandSender s, Command c, String label, String[] args) {
