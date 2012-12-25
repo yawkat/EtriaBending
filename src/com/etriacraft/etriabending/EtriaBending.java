@@ -70,6 +70,7 @@ public class EtriaBending extends JavaPlugin {
 		PlayerListener.joinmessage = getConfig().getString("messaging.joinmessage"); 
 		PlayerListener.quitmessage = getConfig().getString("messaging.leavemessage");
 		PlayerListener.welcomemessage = getConfig().getString("messaging.firstjoinmessage");
+		HomeSuite.homescap = getConfig().getInt("PlayerHomeLimit");
 		//
 		DBConnection.initialize();
 		HomeSuite.Homes();

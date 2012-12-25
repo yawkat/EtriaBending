@@ -20,6 +20,8 @@ import com.etriacraft.etriabending.util.Home;
 import com.etriacraft.etriabending.util.PlayerUtils;
 
 public class HomeSuite {
+	
+	public static int homescap;
 
 	public static HashMap<String, List<Home>> homesDb = new HashMap();
 
@@ -70,14 +72,23 @@ public class HomeSuite {
 		}
 	}
 
-	int getPlayerHomeLimit(CommandSender s) {
-		if (s.isOp()) return plugin.getConfig().getInt("PlayerHomeLimit");
-		int cap = 0;
-		for (int i = 0; i <= plugin.getConfig().getInt("PlayerHomeLimit"); i++) {
-			if (s.hasPermission("eb.sethome.limit." + i)) cap = i;
-		}
-		return cap;
-	}
+	static int getPlayerHomeLimit(CommandSender s) {
+	     if (s.isOp()) return homescap;
+	     int cap = 0;
+	     for (int i = 0; i <= homescap; i++) {
+	     if (s.hasPermission("ec.sethome.limit." + i)) cap = i;
+	     }
+	     return cap;
+	    }
+	
+//	static int getPlayerHomeLimit(CommandSender s) {
+//	     if (s.isOp()) return Config.GLOBAL_MAX_HOMES;
+//	     int cap = 0;
+//	     for (int i = 0; i <= Config.GLOBAL_MAX_HOMES; i++) {
+//	     if (s.hasPermission("ec.sethome.limit." + i)) cap = i;
+//	     }
+//	     return cap;
+//	    }
 
 	EtriaBending plugin;
 
