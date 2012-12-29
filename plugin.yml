@@ -72,7 +72,7 @@ commands:
   ignore:
     usage: /<command> [Player]
   message:
-    aliases: [pm, msg, m, send]
+    aliases: [pm, msg, m, send, whisper, tell]
     usage: /<command>
   reply:
     aliases: [r]
