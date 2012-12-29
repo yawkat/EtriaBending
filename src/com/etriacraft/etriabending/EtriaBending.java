@@ -5,6 +5,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import org.bukkit.configuration.file.FileConfiguration;
@@ -20,6 +23,7 @@ public class EtriaBending extends JavaPlugin {
 	public static Logger log;
 	public static EtriaBending instance;
 	DBConnection dbc;
+	private Map<String, List<String>> ignoreList = new HashMap<String, List<String>>();
 	
 	File configFile;
 	FileConfiguration config;
@@ -69,7 +73,7 @@ public class EtriaBending extends JavaPlugin {
 		//
 		PlayerListener.joinmessage = getConfig().getString("messaging.joinmessage"); 
 		PlayerListener.quitmessage = getConfig().getString("messaging.leavemessage");
-		PlayerListener.welcomemessage = getConfig().getString("messaging.firstjoinmessage");
+		PlayerListener.welcomemessage = getConfig().getString("messaging.firstjoin");
 		HomeSuite.homescap = getConfig().getInt("PlayerHomeLimit");
 		//
 		DBConnection.initialize();
@@ -125,6 +129,10 @@ public class EtriaBending extends JavaPlugin {
 	
 	public static EtriaBending getInstance() {
 		return instance;
+	}
+	
+	public Map<String, List<String>> getList() {
+		return ignoreList;
 	}
 	
 

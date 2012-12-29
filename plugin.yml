@@ -43,6 +43,9 @@ commands:
   workbench:
     aliases: [wb]
     usage: /<command>
+  enchantingtable:
+    aliases: [et]
+    usage: /<command>
   tp:
     aliases: [teleport]
     usage: /<command>
@@ -66,6 +69,8 @@ commands:
     aliases: [homes]
   motd:
     usage: /<command>
+  ignore:
+    usage: /<command> [Player]
   message:
     aliases: [pm, msg, m, send]
     usage: /<command>
@@ -101,6 +106,7 @@ permissions:
       eb.vanish.seehidden: true
       eb.vanish.alert: true
       eb.workbench: true
+      eb.enchantingtable: true
       eb.tpa.answer: true
       eb.tpa: true
       eb.tp: true
@@ -110,6 +116,8 @@ permissions:
       eb.home: true
       eb.home.others: true
       eb.listhomes: true
+      eb.ignore: true
+      eb.ignore.block: true
       eb.listhomes.others: true
       eb.sethome: true
       eb.sethome.named: true
@@ -119,6 +127,6 @@ permissions:
       eb.msg: true
       eb.msg.spy: true
       ec.backpack: true
-      ec.backpack.others: true
+      ec.backpack.other: true
       ec.backpack.size.6: true
       ec.backpack.protected: true

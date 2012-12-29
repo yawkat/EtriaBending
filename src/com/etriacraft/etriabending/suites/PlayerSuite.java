@@ -87,6 +87,7 @@ public class PlayerSuite {
 		PluginCommand help = plugin.getCommand("help");
 		PluginCommand vanish = plugin.getCommand("vanish");
 		PluginCommand workbench = plugin.getCommand("workbench");
+		PluginCommand enchantingtable = plugin.getCommand("enchantingtable");
 		CommandExecutor exe;
 
 		exe = new CommandExecutor() {
@@ -268,6 +269,20 @@ public class PlayerSuite {
 				} return true;
 			}
 		}; workbench.setExecutor(exe);
+		
+		exe = new CommandExecutor() {
+			public boolean onCommand(CommandSender s, Command c, String label, String[] args) {
+				if (s.hasPermission("eb.enchantingtable")) {
+					s.sendMessage("§cYou don't have permission to do that!");
+				} else {
+					if (!(s instanceof Player)) return false;
+					Player p = (Player) s;
+					p.openEnchanting(null, true);
+					p.sendMessage("§aHave an enchanting table.");
+					return true;
+				} return true;
+			}
+		}; enchantingtable.setExecutor(exe);
 	}
 
 }

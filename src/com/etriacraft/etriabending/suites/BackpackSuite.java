@@ -191,13 +191,13 @@ public class BackpackSuite {
 	private static int getPackSize(Player p) {
 		int size = 0;
 		for (int i = 1; i <= MAX_INVENTORY_ROWS; i++) {
-			if (p.hasPermission("ec.backpack.size." + i)) size = i * INVENTORY_ROW_SIZE;
+			if (p.hasPermission("eb.backpack.size." + i)) size = i * INVENTORY_ROW_SIZE;
 		}
 		return size;
 	}
 
 	public static boolean getPackIsProtected(Player p) {
-		return p.hasPermission("ec.backpack.protected");
+		return p.hasPermission("eb.backpack.protected");
 	}
 
 	public static void clearPack(String p) {

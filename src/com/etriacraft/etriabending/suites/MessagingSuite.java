@@ -1,6 +1,9 @@
 package com.etriacraft.etriabending.suites;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -22,7 +25,7 @@ public class MessagingSuite {
 		this.plugin = instance;
 		init();
 	}
-	
+
 	public static void showMotd(CommandSender s) {
 		for (String mess : plugin.getConfig().getStringList("messaging.motd")) {
 			mess = mess.replace("<name>", s.getName());
@@ -36,6 +39,8 @@ public class MessagingSuite {
 		PluginCommand message = plugin.getCommand("message");
 		PluginCommand reply = plugin.getCommand("reply");
 		PluginCommand modchat = plugin.getCommand("modchat");
+		PluginCommand ignore = plugin.getCommand("ignore");
+		PluginCommand ignorelist = plugin.getCommand("ignorelist");
 		CommandExecutor exe;
 
 		exe = new CommandExecutor() {
@@ -143,6 +148,46 @@ public class MessagingSuite {
 				}
 			}
 		}; modchat.setExecutor(exe);
+
+		exe = new CommandExecutor() {
+			public boolean onCommand(CommandSender s, Command c, String label, String[] args) {
+				if (!s.hasPermission("eb.ignore")) {
+					s.sendMessage("§cYou don't have permission to do that!");
+				}
+				else {
+					if (!(s instanceof Player) || args.length != 1) return false;
+
+					Player player = (Player) s;
+					Player query = plugin.getServer().getPlayer(args[0]);
+					if (query == null) {
+						s.sendMessage("§cPlayer not found.");
+						return false;
+					} else if (query.hasPermission("eb.ignore.block")) {
+						s.sendMessage("§cThat player can't be ignored.");
+					} else {
+
+						String pn = player.getName();
+						String qn = query.getName();
+						Map<String, List<String>> ignoreList = plugin.getList();
+
+						if (!ignoreList.containsKey(pn)) ignoreList.put(pn, new ArrayList<String>());
+
+						List<String> list = ignoreList.get(pn);
+						if(list.contains(qn)) {
+							list.remove(qn);
+							s.sendMessage("§cNo longer ignoring " + qn);
+						} else {
+							list.add(qn);
+							s.sendMessage("§cNow ignoring " + qn);
+						}
+						return true;
+					}
+					return true;
+				}
+				return true;
+			}
+		};ignore.setExecutor(exe);
+
 	}
 
 }

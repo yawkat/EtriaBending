@@ -1,6 +1,8 @@
 package com.etriacraft.etriabending.listeners;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -9,6 +11,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
@@ -55,6 +59,26 @@ public class PlayerListener implements Listener {
 			e.setJoinMessage(Utils.colorize(welcomemessage).replaceAll("<name>", e.getPlayer().getName()));
 		} else {
 			e.setJoinMessage(Utils.colorize(joinmessage).replaceAll("<name>", e.getPlayer().getName()));
+		}
+	}
+	
+	@EventHandler
+	public void onPlayerChat(AsyncPlayerChatEvent event) {
+		if (event.isCancelled()) return;
+		
+		Map<String, List<String>> ignoreList = plugin.getList();
+		String p = event.getPlayer().getName();
+		List<String> playerIgnores = ignoreList.get(p);
+		
+		for (Iterator<Player> it = event.getRecipients().iterator(); it.hasNext();) {
+			Player r = it.next();
+			List<String> recipientIgnores = ignoreList.get(r.getName());
+			
+			boolean playerIgnoresRecipient = playerIgnores != null && playerIgnores.contains(r.getName());
+			boolean recipientIgnoresPlayer = recipientIgnores!= null && recipientIgnores.contains(p);
+			if (playerIgnoresRecipient || recipientIgnoresPlayer) {
+				it.remove();
+			}
 		}
 	}
 
