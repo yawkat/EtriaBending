@@ -61,6 +61,7 @@ public class EtriaBending extends JavaPlugin {
 		this.getServer().getPluginManager().registerEvents(new EntityListener(), this);
 		this.getServer().getPluginManager().registerEvents(new InventoryListener(), this);
 		this.getServer().getPluginManager().registerEvents(new PlayerListener(), this);
+		this.getServer().getPluginManager().registerEvents(new BlockListener(), this);
 		
 		// Register Commands
 		bs = new BackpackSuite(this);
