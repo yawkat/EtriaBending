@@ -274,7 +274,7 @@ public class PlayerSuite {
 		
 		exe = new CommandExecutor() {
 			public boolean onCommand(CommandSender s, Command c, String label, String[] args) {
-				if (s.hasPermission("eb.enchantingtable")) {
+				if (!s.hasPermission("eb.enchantingtable")) {
 					s.sendMessage("§cYou don't have permission to do that!");
 				} else {
 					if (!(s instanceof Player)) return false;
@@ -295,6 +295,7 @@ public class PlayerSuite {
 				}
 				if (!s.hasPermission("eb.savexp")) {
 					s.sendMessage("§cYou don't have permission to do that!");
+					return true;
 				} if (!(noexpdropDB.contains(s.getName()))) {
 					noexpdropDB.add(s.getName());
 					s.sendMessage("§aYour exp will now be saved when you die.");
