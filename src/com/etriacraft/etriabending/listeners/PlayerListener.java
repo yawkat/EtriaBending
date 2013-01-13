@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -62,25 +63,25 @@ public class PlayerListener implements Listener {
 		}
 	}
 	
-	@EventHandler
-	public void onPlayerChat(AsyncPlayerChatEvent event) {
-		if (event.isCancelled()) return;
-		
-		Map<String, List<String>> ignoreList = plugin.getList();
-		String p = event.getPlayer().getName();
-		List<String> playerIgnores = ignoreList.get(p);
-		
-		for (Iterator<Player> it = event.getRecipients().iterator(); it.hasNext();) {
-			Player r = it.next();
-			List<String> recipientIgnores = ignoreList.get(r.getName());
-			
-			boolean playerIgnoresRecipient = playerIgnores != null && playerIgnores.contains(r.getName());
-			boolean recipientIgnoresPlayer = recipientIgnores!= null && recipientIgnores.contains(p);
-			if (playerIgnoresRecipient || recipientIgnoresPlayer) {
-				it.remove();
-			}
-		}
-	}
+//	@EventHandler
+//	public void onPlayerChat(AsyncPlayerChatEvent event) {
+//		if (event.isCancelled()) return;
+//		
+//		Map<String, List<String>> ignoreList = plugin.getList();
+//		String p = event.getPlayer().getName();
+//		List<String> playerIgnores = ignoreList.get(p);
+//		
+//		for (Iterator<Player> it = event.getRecipients().iterator(); it.hasNext();) {
+//			Player r = it.next();
+//			List<String> recipientIgnores = ignoreList.get(r.getName());
+//			
+//			boolean playerIgnoresRecipient = playerIgnores != null && playerIgnores.contains(r.getName());
+//			boolean recipientIgnoresPlayer = recipientIgnores!= null && recipientIgnores.contains(p);
+//			if (playerIgnoresRecipient || recipientIgnoresPlayer) {
+//				it.remove();
+//			}
+//		}
+//	}
 
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent e) {
@@ -94,6 +95,16 @@ public class PlayerListener implements Listener {
 			i.setContents(c.getInventory().getContents());
 			e.getPlayer().openInventory(i);
 			PlayerSuite.silentChestOpen(e.getPlayer());
+		}
+	}
+	
+	@EventHandler
+	public void onPlayerDeath(PlayerDeathEvent e) {
+		Player player = e.getEntity();
+		if (PlayerSuite.noexpdropDB.contains(player.getName())) {
+			e.setKeepLevel(true);
+			e.setDroppedExp(0);
+			
 		}
 	}
 

@@ -24,6 +24,8 @@ commands:
   weather:
     usage: /<command>
   # Player Suite
+  savexp:
+    usage: /<command>
   gamemode:
     aliases: [gm]
     usage: /<command>

@@ -113,6 +113,7 @@ public class InventorySuite {
 					}
 
 					s.sendMessage("§aGiving§e " + is.getAmount() + " " + Strings.toTitle(is.getType().name()) + ((s != p)? " §ato§e " + p.getName() : ""));
+					p.getInventory().addItem(is);
 					return true;
 				} return true;
 

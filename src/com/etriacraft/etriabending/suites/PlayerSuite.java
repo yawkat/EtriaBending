@@ -71,7 +71,8 @@ public class PlayerSuite {
 	public static HashMap<String, List<String>> helpPagesDb = new HashMap();
 	public static Set<String> vanishDb = new HashSet<String>();
 	public static Set<String> chestUserDb = new HashSet<String>();
-
+	public static Set<String> noexpdropDB = new HashSet<String>();
+	
 	EtriaBending plugin;
 
 	public PlayerSuite(EtriaBending instance) {
@@ -88,6 +89,7 @@ public class PlayerSuite {
 		PluginCommand vanish = plugin.getCommand("vanish");
 		PluginCommand workbench = plugin.getCommand("workbench");
 		PluginCommand enchantingtable = plugin.getCommand("enchantingtable");
+		PluginCommand savexp = plugin.getCommand("savexp");
 		CommandExecutor exe;
 
 		exe = new CommandExecutor() {
@@ -283,6 +285,26 @@ public class PlayerSuite {
 				} return true;
 			}
 		}; enchantingtable.setExecutor(exe);
+		
+		exe = new CommandExecutor() {
+			@Override
+			public boolean onCommand(CommandSender s, Command c, String label, String[] args) {
+				final Player p = (Player) s;
+				if (!(s instanceof Player)) {
+					s.sendMessage("§cThis command is only available to players.");
+				}
+				if (!s.hasPermission("eb.savexp")) {
+					s.sendMessage("§cYou don't have permission to do that!");
+				} if (!(noexpdropDB.contains(s.getName()))) {
+					noexpdropDB.add(s.getName());
+					s.sendMessage("§aYour exp will now be saved when you die.");
+				} else if (noexpdropDB.contains(s.getName())) {
+					noexpdropDB.remove(s.getName());
+					s.sendMessage("§aYour exp will now drop on death.");
+				}
+				return true;
+			}
+		}; savexp.setExecutor(exe);
 	}
 
 }
