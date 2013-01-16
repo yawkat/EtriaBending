@@ -232,7 +232,7 @@ public class HomeSuite {
 						}
 					}
 
-					if (homesDb.containsKey(player)) homesDb.put(player,  new ArrayList());
+					if (!homesDb.containsKey(player)) homesDb.put(player,  new ArrayList());
 
 					final int limit = getPlayerHomeLimit(s);
 					if (homesDb.get(player) != null && homesDb.get(player).size() >= limit) {
