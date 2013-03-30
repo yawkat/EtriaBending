@@ -136,7 +136,7 @@ public class TeleportSuite {
 								return true;
 							}
 							loc = new Location(w, x, y, z);
-							s.sendMessage(String.format("§aTeleporting to: X:§e %1$s §aY:§e %2$s §aZ:§e %3$s$a in§e $4$s", x, y, z, w.getName()));
+							s.sendMessage(String.format("§aTeleporting to: X:§e %1$s §aY:§e %2$s §aZ:§e %3$s$a in§e %4$s", x, y, z, w.getName()));
 						} catch (NumberFormatException e) {
 							s.sendMessage("Invalid coordinates");
 							return true;

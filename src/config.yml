@@ -1,4 +1,3 @@
-sqlitedb: etriabending.db
 messaging:
   motd:
   - Welcome to the EtriaCraft Bending Server.
@@ -8,3 +7,5 @@ messaging:
   leavemessage: '&7<name> &3has left the game.'
   modchat: '&c[&aModChat&c] &c<name>&7:&a <message>'
 PlayerHomeLimit: 300
+DisplayNames:
+  player1: player2

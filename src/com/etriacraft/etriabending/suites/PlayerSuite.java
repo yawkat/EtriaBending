@@ -2,6 +2,8 @@ package com.etriacraft.etriabending.suites;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -72,7 +74,7 @@ public class PlayerSuite {
 	public static Set<String> vanishDb = new HashSet<String>();
 	public static Set<String> chestUserDb = new HashSet<String>();
 	public static Set<String> noexpdropDB = new HashSet<String>();
-	
+
 	EtriaBending plugin;
 
 	public PlayerSuite(EtriaBending instance) {
@@ -90,6 +92,8 @@ public class PlayerSuite {
 		PluginCommand workbench = plugin.getCommand("workbench");
 		PluginCommand enchantingtable = plugin.getCommand("enchantingtable");
 		PluginCommand savexp = plugin.getCommand("savexp");
+		PluginCommand displayname = plugin.getCommand("displayname");
+		PluginCommand eb = plugin.getCommand("eb");
 		CommandExecutor exe;
 
 		exe = new CommandExecutor() {
@@ -209,16 +213,16 @@ public class PlayerSuite {
 					return true;
 				}
 
-					String page = "default";
-					if (args.length >= 1)
-						page = args[0].toLowerCase();
+				String page = "default";
+				if (args.length >= 1)
+					page = args[0].toLowerCase();
 
-					if (helpPagesDb.containsKey(page)) {
-						for (String sent : helpPagesDb.get(page)) {
-							s.sendMessage(sent.replaceAll("(?i)&([a-fk-or0-9])", "\u00A7$1"));
-						}
-					} else s.sendMessage("§cThat page does not exist.");
-					return true;
+				if (helpPagesDb.containsKey(page)) {
+					for (String sent : helpPagesDb.get(page)) {
+						s.sendMessage(sent.replaceAll("(?i)&([a-fk-or0-9])", "\u00A7$1"));
+					}
+				} else s.sendMessage("§cThat page does not exist.");
+				return true;
 			}
 		}; help.setExecutor(exe);
 
@@ -271,7 +275,7 @@ public class PlayerSuite {
 				} return true;
 			}
 		}; workbench.setExecutor(exe);
-		
+
 		exe = new CommandExecutor() {
 			public boolean onCommand(CommandSender s, Command c, String label, String[] args) {
 				if (!s.hasPermission("eb.enchantingtable")) {
@@ -285,7 +289,7 @@ public class PlayerSuite {
 				} return true;
 			}
 		}; enchantingtable.setExecutor(exe);
-		
+
 		exe = new CommandExecutor() {
 			@Override
 			public boolean onCommand(CommandSender s, Command c, String label, String[] args) {
@@ -306,6 +310,48 @@ public class PlayerSuite {
 				return true;
 			}
 		}; savexp.setExecutor(exe);
-	}
 
+		exe = new CommandExecutor() {
+			@Override
+			public boolean onCommand(CommandSender s, Command c, String label, String[] args) {
+				final Player p = (Player) s;
+				if (!(s instanceof Player)) {
+					s.sendMessage("§cThis command is only usable by players.");
+				}
+				if (!s.hasPermission("eb.displayname")) {
+					s.sendMessage("§cYou don't have permission to do that!");
+					return true;
+				} if (args.length < 1) {
+					s.sendMessage("§cNot enough arguments.");
+					return true;
+				} if (args.length > 1) {
+					s.sendMessage("§cToo many arguments.");
+					return true;
+				} else {
+					String displayName = args[0];
+					p.setDisplayName(displayName);
+					s.sendMessage("§aYour display name is now: §3" + displayName);
+					plugin.getConfig().set("displaynames." + p.getName(), displayName);
+					plugin.saveConfig();
+				}
+				return true;
+			}
+			
+		}; displayname.setExecutor(exe);
+		
+		exe = new CommandExecutor() {
+			@Override
+			public boolean onCommand(CommandSender s, Command c, String label, String[] args) {
+				if (!s.hasPermission("eb.eb")) {
+					s.sendMessage("§cYou don't have permission to do that!");
+					return true;
+				} if (args.length != 0) {
+					s.sendMessage("§cToo many arguments.");
+					return true;
+				} else {
+					plugin.reloadConfig();
+				} return true;
+			}
+		}; eb.setExecutor(exe);
+	}
 }

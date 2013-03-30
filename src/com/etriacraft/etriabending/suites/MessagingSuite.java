@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -83,7 +84,7 @@ public class MessagingSuite {
 
 					for(Player player: Bukkit.getOnlinePlayers()) {
 						if ((player.hasPermission("eb.msg.spy"))) {
-							player.sendMessage("§3[Spy]§a[§7" + s.getName() + "§a -> §7" + r.getName() + "§a] §e" + message);
+							player.sendMessage("§d[Spy][§4" + s.getName() + "§d -> §4" + r.getName() + "§d] §d" + message);
 						}
 					}
 					return true;
@@ -116,7 +117,7 @@ public class MessagingSuite {
 
 						for(Player player: Bukkit.getOnlinePlayers()) {
 							if ((player.hasPermission("eb.msg.spy"))) {
-								player.sendMessage("§3[Spy]§a[§7" + s.getName() + "§a -> §7" + r.getName() + "§a] §e" + message);
+								player.sendMessage("§d[Spy][§4" + s.getName() + "§d -> §4" + r.getName() + "§d] §d" + message);
 							}
 						}
 						return true;
@@ -189,5 +190,6 @@ public class MessagingSuite {
 		};ignore.setExecutor(exe);
 
 	}
+	
 
 }

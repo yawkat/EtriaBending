@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.etriacraft.etriabending.listeners.*;
@@ -22,19 +23,18 @@ public class EtriaBending extends JavaPlugin {
 	// Variables
 	public static Logger log;
 	public static EtriaBending instance;
-	DBConnection dbc;
 	private Map<String, List<String>> ignoreList = new HashMap<String, List<String>>();
 	
 	File configFile;
 	FileConfiguration config;
 	
+	public String displayname;
+	
 	// Commands
-	BackpackSuite bs;
 	InventorySuite is;
 	WorldSuite ws;
 	PlayerSuite ps;
 	TeleportSuite ts;
-	HomeSuite hs;
 	MessagingSuite ms;
 	
 	// Events
@@ -54,41 +54,43 @@ public class EtriaBending extends JavaPlugin {
 		config = new YamlConfiguration();
 		loadYamls();
 		
-		DBConnection.sqlite_db = config.getString("sqlitedb", "etriabending.db");
 		// Events
-		this.getServer().getPluginManager().registerEvents(new BackpackListeners(), this);
+//		this.getServer().getPluginManager().registerEvents(new BackpackListeners(), this);
 		this.getServer().getPluginManager().registerEvents(new ElevatorListener(), this);
 		this.getServer().getPluginManager().registerEvents(new EntityListener(), this);
 		this.getServer().getPluginManager().registerEvents(new InventoryListener(), this);
-		this.getServer().getPluginManager().registerEvents(new PlayerListener(), this);
+		this.getServer().getPluginManager().registerEvents(new PlayerListener(this), this);
 		this.getServer().getPluginManager().registerEvents(new BlockListener(), this);
 		
 		// Register Commands
-		bs = new BackpackSuite(this);
+//		bs = new BackpackSuite(this);
 		ws = new WorldSuite(this);
 		is = new InventorySuite(this);
 		ps = new PlayerSuite(this);
 		ts = new TeleportSuite(this);
-		hs = new HomeSuite(this);
 		ms = new MessagingSuite(this);
 		//
 		PlayerListener.joinmessage = getConfig().getString("messaging.joinmessage"); 
 		PlayerListener.quitmessage = getConfig().getString("messaging.leavemessage");
 		PlayerListener.welcomemessage = getConfig().getString("messaging.firstjoin");
-		HomeSuite.homescap = getConfig().getInt("PlayerHomeLimit");
-		//
-		DBConnection.initialize();
-		HomeSuite.Homes();
-		BackpackSuite.BackpackInitialize();
-		BackpackSuite.loadPackDb();
+
 	}
 	
 	public void onDisable() {
-		DBConnection.sql.close();
-		BackpackSuite.shutdown();
+//		BackpackSuite.shutdown();
 	}
 	
 	// Misc. Methods
+	
+	public String getDisplayName(Player player) {
+		String displayName = null;
+		if (getConfig().getString("displaynames." + player.getName()).equals(null)) {
+			displayName = player.getName();
+		} if (!getConfig().getString("displaynames." + player.getName()).equals(null)) {
+			displayName = getConfig().getString("displaynames." + player.getName());
+		}
+		return displayName;
+	}
 	public void firstRun() throws Exception {
 		if (!configFile.exists()) {
 			configFile.getParentFile().mkdirs();

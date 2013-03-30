@@ -24,6 +24,9 @@ commands:
   weather:
     usage: /<command>
   # Player Suite
+  displayname:
+    usage: /<command>
+    aliases: [dn,display]
   savexp:
     usage: /<command>
   gamemode:
@@ -57,18 +60,10 @@ commands:
   tphere:
     aliases: [bring, summon]
     usage: /<command>
+  eb:
+    usage: /<command>
   spawn:
     usage: /<command>
-  home:
-    usage: /<command>
-  sethome:
-    usage: /<command>
-  delhome:
-    usage: /<command>
-    aliases: [deletehome]
-  listhomes:
-    usage: /<command>
-    aliases: [homes]
   motd:
     usage: /<command>
   ignore:
@@ -82,13 +77,13 @@ commands:
   modchat:
     aliases: [mc, ac, adminchat]
     usage: /<command>
-  backpack:
-    aliases: [bp, pack]
+  ip:
     usage: /<command>
 permissions:
   eb.admin:
     default: false
     children:
+      eb.ip: true
       eb.chunkfix: true
       eb.clear: true
       eb.copyinv: true
@@ -104,6 +99,7 @@ permissions:
       eb.god.others: true
       eb.getpos: true
       eb.gamemode: true
+      eb.eb: true
       eb.vanish: true
       eb.vanish.seehidden: true
       eb.vanish.alert: true
@@ -114,21 +110,11 @@ permissions:
       eb.tp: true
       eb.tphere: true
       eb.spawn: true
-      eb.delhome: true
-      eb.home: true
-      eb.home.others: true
-      eb.listhomes: true
       eb.ignore: true
       eb.ignore.block: true
-      eb.listhomes.others: true
-      eb.sethome: true
-      eb.sethome.named: true
       eb.motd: true
       eb.modchat: true
       eb.reply: true
       eb.msg: true
       eb.msg.spy: true
-      ec.backpack: true
-      ec.backpack.other: true
-      ec.backpack.size.6: true
-      ec.backpack.protected: true
+      eb.displayname: true

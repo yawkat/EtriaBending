@@ -1,9 +1,5 @@
 package com.etriacraft.etriabending.listeners;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Chest;
@@ -12,8 +8,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
@@ -28,6 +22,9 @@ import com.etriacraft.etriabending.util.Utils;
 public class PlayerListener implements Listener {
 
 	EtriaBending plugin;
+	public PlayerListener(EtriaBending instance) {
+		this.plugin = instance;
+	}
 	
 	public static String joinmessage;
 	public static String welcomemessage;
@@ -44,22 +41,29 @@ public class PlayerListener implements Listener {
 			PlayerSuite.setVanished(e.getPlayer(), true);
 			e.getPlayer().sendMessage("§aYou logged in vanished!");
 		}
-
+		
 		MessagingSuite.showMotd(e.getPlayer());
 
 	}
 	
 	@EventHandler
 	public void playerquitmessage(PlayerQuitEvent e) {
-		e.setQuitMessage(Utils.colorize(quitmessage).replaceAll("<name>", e.getPlayer().getName()));
+		e.setQuitMessage(Utils.colorize(quitmessage).replaceAll("<name>", e.getPlayer().getDisplayName()));
 	}
 	@EventHandler
 	public void playerjoinmessages(PlayerJoinEvent e) {
 		Player p = e.getPlayer();
-		if (!p.hasPlayedBefore()) {
-			e.setJoinMessage(Utils.colorize(welcomemessage).replaceAll("<name>", e.getPlayer().getName()));
+		String displayName;
+		if (!(plugin.getConfig().get("displaynames." + p.getName()) == null)) {
+			displayName = plugin.getConfig().getString("displaynames." + p.getName());
 		} else {
-			e.setJoinMessage(Utils.colorize(joinmessage).replaceAll("<name>", e.getPlayer().getName()));
+			displayName = p.getName();
+		}
+		p.setDisplayName(displayName);
+		if (!p.hasPlayedBefore()) {
+			e.setJoinMessage(Utils.colorize(welcomemessage).replaceAll("<name>", p.getDisplayName()));
+		} else {
+			e.setJoinMessage(Utils.colorize(joinmessage).replaceAll("<name>", p.getDisplayName()));
 		}
 	}
 	
@@ -75,9 +79,13 @@ public class PlayerListener implements Listener {
 //			Player r = it.next();
 //			List<String> recipientIgnores = ignoreList.get(r.getName());
 //			
+//			if (playerIgnores.contains(r.getName())) {
+//				event.getRecipients().remove(r);
+//			}
 //			boolean playerIgnoresRecipient = playerIgnores != null && playerIgnores.contains(r.getName());
-//			boolean recipientIgnoresPlayer = recipientIgnores!= null && recipientIgnores.contains(p);
+//			boolean recipientIgnoresPlayer = recipientIgnores != null && recipientIgnores.contains(p);
 //			if (playerIgnoresRecipient || recipientIgnoresPlayer) {
+//				event.getRecipients().remove(r);
 //				it.remove();
 //			}
 //		}
