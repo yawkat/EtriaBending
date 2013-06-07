@@ -12,6 +12,8 @@ import java.util.Set;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.Sound;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -26,6 +28,8 @@ import com.etriacraft.etriabending.Strings;
 import com.etriacraft.etriabending.util.Utils;
 
 public class PlayerSuite {
+
+	public static boolean maintenanceon = false;
 
 	// Methods
 	public static void Helps() {
@@ -94,6 +98,9 @@ public class PlayerSuite {
 		PluginCommand savexp = plugin.getCommand("savexp");
 		PluginCommand displayname = plugin.getCommand("displayname");
 		PluginCommand eb = plugin.getCommand("eb");
+		PluginCommand maintenance = plugin.getCommand("maintenance");
+		PluginCommand thor = plugin.getCommand("thor");
+		PluginCommand cow = plugin.getCommand("cow");
 		CommandExecutor exe;
 
 		exe = new CommandExecutor() {
@@ -179,6 +186,7 @@ public class PlayerSuite {
 			public boolean onCommand(CommandSender s, Command c, String label, String[] args) {
 				if (!s.hasPermission("eb.hat")) {
 					s.sendMessage("§cYou don't have permission to do that!");
+					return true;
 				} else {
 					if (!(s instanceof Player)) return false;
 
@@ -201,7 +209,7 @@ public class PlayerSuite {
 						s.sendMessage("§cTake off your old hat first.");
 						return true;
 					}
-				} return true;
+				} 
 			}
 		}; hat.setExecutor(exe);
 
@@ -300,13 +308,10 @@ public class PlayerSuite {
 				if (!s.hasPermission("eb.savexp")) {
 					s.sendMessage("§cYou don't have permission to do that!");
 					return true;
-				} if (!(noexpdropDB.contains(s.getName()))) {
-					noexpdropDB.add(s.getName());
-					s.sendMessage("§aYour exp will now be saved when you die.");
-				} else if (noexpdropDB.contains(s.getName())) {
-					noexpdropDB.remove(s.getName());
-					s.sendMessage("§aYour exp will now drop on death.");
-				}
+				} 
+				s.sendMessage("§cHey There! Thanks for purchasing this command!");
+				s.sendMessage("§cYou no longer need to use the command to activate.");
+				s.sendMessage("§cYour EXP will save automatically now, and you never have to reactivate it.");
 				return true;
 			}
 		}; savexp.setExecutor(exe);
@@ -336,9 +341,9 @@ public class PlayerSuite {
 				}
 				return true;
 			}
-			
+
 		}; displayname.setExecutor(exe);
-		
+
 		exe = new CommandExecutor() {
 			@Override
 			public boolean onCommand(CommandSender s, Command c, String label, String[] args) {
@@ -353,5 +358,103 @@ public class PlayerSuite {
 				} return true;
 			}
 		}; eb.setExecutor(exe);
+
+		exe = new CommandExecutor() {
+			@Override
+			public boolean onCommand(CommandSender s, Command c, String label, String[] args) {
+				if (!s.hasPermission("eb.maintenance")) {
+					s.sendMessage("§cYou don't have permission to do that!");
+					return true;
+				} else {
+					if (!maintenanceon) {
+						s.sendMessage("§aThe server has now been put into Maintenance Mode.");
+						s.sendMessage("§aFrom this point on, unpermitted players will be kicked.");
+						s.sendMessage("§aYou can disable maintenance mode by typing §3/maintenance deactivate§a.");
+
+						Player[] players = plugin.getServer().getOnlinePlayers();
+						for (Player p : players) {
+							if ((!p.isOp()) && (!p.hasPermission("eb.maintenance.safe"))) {
+								p.kickPlayer("Undergoing Maintenance");
+							}
+						}
+						maintenanceon = true;
+						return true;
+					} else if (maintenanceon) {
+						s.sendMessage("§aYour server is no longer undergoing maintenance mode.");
+						maintenanceon = false;
+						return true;
+					}
+				}
+				return true;
+			}
+		}; maintenance.setExecutor(exe);
+
+		exe = new CommandExecutor() {
+			@Override
+			public boolean onCommand(CommandSender s, Command c, String label, String[] args) {
+				if (!s.hasPermission("eb.thor")) {
+					s.sendMessage("§cYou don't have permission to do that!");
+					return true;
+				} else {
+					if (args.length != 2) {
+						s.sendMessage("§3Correct Usage: §c/thor <player> <amount>");
+						return true;
+					}
+					String strickenplayer = args[0];
+					int amount = Integer.parseInt(args[1]);
+
+					Player p = plugin.getServer().getPlayer(strickenplayer);
+
+					if (p == null) {
+						s.sendMessage("§cThat player is not online.");
+						return true;
+					}
+
+					final Location playerLocation = p.getLocation();
+					final World world = p.getWorld();
+
+					for(int i = 0; i < amount; i++)
+						plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable(){ public void run(){
+							world.strikeLightningEffect(playerLocation);
+						} }, (int) (i * 5 + Math.random() * 5));
+
+					Bukkit.broadcastMessage("§3" + p.getName() + " §chas been stricken by lightning §3" + amount + " times §cat the hands of Thor.");
+					Bukkit.broadcastMessage("§cWe wish §3" + p.getName() + "§c a speedy recovery.");
+
+				}
+				return true;
+			}
+		}; thor.setExecutor(exe);
+
+		exe = new CommandExecutor() {
+			@Override
+			public boolean onCommand(CommandSender s, Command c, String label, String[] args) {
+				if (!s.hasPermission("eb.cow")) {
+					s.sendMessage("§cYou don't have permission to do that!");
+				}
+				
+				if (args.length != 2) {
+					s.sendMessage("§3Correct Usage: §c/cow <player> <amount>");
+					return true;
+				}
+				String player = args[0];
+				int amount = Integer.parseInt(args[1]);
+
+				Player p = plugin.getServer().getPlayer(player);
+
+				if (p == null) {
+					s.sendMessage("§cThat player is not online.");
+					return true;
+				}
+				final Location playerLocation = p.getLocation();
+				final World world = p.getWorld();
+								
+				for(int i = 0; i < amount; i++)
+					plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable(){ public void run(){
+						world.playSound(playerLocation, Sound.COW_HURT, 20, 1);
+					} }, (int) (i * 5 + Math.random() * 5));
+				return true;
+			}
+		}; cow.setExecutor(exe);
 	}
 }

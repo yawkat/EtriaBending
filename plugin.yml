@@ -1,6 +1,7 @@
 name: EtriaBending
 version: 1.0
 main: com.etriacraft.etriabending.EtriaBending
+depends: [GriefPrevention]
 commands:
   chunkfix:
     aliases: [fixchunk, reloadchunk]
@@ -41,9 +42,15 @@ commands:
   hat:
     aliases: [helmet]
     usage: /<command>
+  cow:
+    usage: /<command>
   help:
     usage: /<command>
   vanish:
+    usage: /<command>]
+  maintenance:
+    usage: /<command>
+  thor:
     usage: /<command>
   workbench:
     aliases: [wb]
@@ -96,6 +103,7 @@ permissions:
       eb.help: true
       eb.hat: true
       eb.god: true
+      eb.thor: true
       eb.god.others: true
       eb.getpos: true
       eb.gamemode: true
@@ -106,6 +114,7 @@ permissions:
       eb.workbench: true
       eb.enchantingtable: true
       eb.tpa.answer: true
+      eb.cow: true
       eb.tpa: true
       eb.tp: true
       eb.tphere: true
@@ -114,6 +123,8 @@ permissions:
       eb.ignore.block: true
       eb.motd: true
       eb.modchat: true
+      eb.maintenance: true
+      eb.maintenance.safe: true
       eb.reply: true
       eb.msg: true
       eb.msg.spy: true
