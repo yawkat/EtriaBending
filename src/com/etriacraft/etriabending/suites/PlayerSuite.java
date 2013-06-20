@@ -2,8 +2,6 @@ package com.etriacraft.etriabending.suites;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -12,7 +10,6 @@ import java.util.Set;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
-import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -20,6 +17,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
@@ -32,6 +30,22 @@ public class PlayerSuite {
 	public static boolean maintenanceon = false;
 
 	// Methods
+	
+	public static void sendTradeRequest(Player target, Player sender) {
+		tradedb.put(sender.getName(), target.getName());
+		target.sendMessage("§3" + sender.getName() + " §a has requested to trade with you.");
+		target.sendMessage("§aType §3/trade " + sender.getName() + " §a to accept the trade.");
+	}
+	
+	public static Inventory getTradeInv(Player p, Player t) {
+		synchronized (trades) {
+			for (final HashMap<String, String> set : trades.keySet()) {
+				if ((set.containsKey(t.getName()) && set.get(t.getName()).equals(p.getName())) || (set.containsKey(p.getName()) && set.get(p.getName()).equals(t.getName())))
+				return trades.get(set);
+			}
+		}
+		return null;
+	}
 	public static void Helps() {
 		File helps = new File(EtriaBending.getInstance().getDataFolder(), "helps.yml");
 		YamlConfiguration config = YamlConfiguration.loadConfiguration(helps);
@@ -78,6 +92,8 @@ public class PlayerSuite {
 	public static Set<String> vanishDb = new HashSet<String>();
 	public static Set<String> chestUserDb = new HashSet<String>();
 	public static Set<String> noexpdropDB = new HashSet<String>();
+	public static final HashMap<String, String> tradedb = new HashMap<String, String>();
+	public static final HashMap<HashMap<String, String>, Inventory> trades = new HashMap<HashMap<String, String>, Inventory>();
 
 	EtriaBending plugin;
 
@@ -99,6 +115,7 @@ public class PlayerSuite {
 		PluginCommand displayname = plugin.getCommand("displayname");
 		PluginCommand eb = plugin.getCommand("eb");
 		PluginCommand maintenance = plugin.getCommand("maintenance");
+		PluginCommand trade = plugin.getCommand("trade");
 		PluginCommand thor = plugin.getCommand("thor");
 		CommandExecutor exe;
 
@@ -439,5 +456,55 @@ public class PlayerSuite {
 				return true;
 			}
 		}; thor.setExecutor(exe);
+		
+		exe = new CommandExecutor() {
+			@Override
+			public boolean onCommand(CommandSender s, Command c, String label, String[] args) {
+				if (!s.hasPermission("eb.trade")) {
+					s.sendMessage("§cYou don't have permission to do that!");
+					return true;
+				}
+				if (args.length < 1) {
+					s.sendMessage("§3Proper Usage: §6/trade [Player]");
+					return true;
+				}
+				
+				Player p = (Player) s;
+				Player t = plugin.getServer().getPlayer(args[0]);
+				if (t == null || PlayerSuite.isVanished(t)) {
+					s.sendMessage("§cThat player is not online.");
+					return true;
+				}
+				if (t.equals(p)) {
+					s.sendMessage("§cYou can't trade with yourself!");
+					return true;
+				}
+				if (t.getGameMode() != p.getGameMode()) {
+					s.sendMessage("§cYou can't trade with someone who is in a different gamemode than you.");
+					return true;
+				}
+				Inventory inv = getTradeInv(p, t);
+				if (inv != null) {
+					p.sendMessage("§aResumed trading with §3" + t.getName() + "§a.");
+					p.openInventory(inv);
+					return true;
+				}
+				if (tradedb.containsKey(t.getName())) {
+					inv = plugin.getServer().createInventory(null, 36, "Trade");
+					p.sendMessage("§aOpened trading interface.");
+					p.openInventory(inv);
+					t.openInventory(inv);
+					final HashMap<String, String> trade = new HashMap<String, String>();
+					trade.put(p.getName(), t.getName());
+					trades.put(trade, inv);
+					tradedb.remove(t.getName());
+					return true;
+				} else {
+					sendTradeRequest(t, p);
+					p.sendMessage("§aSent a trade request to §3" + t.getName() + "§a.");
+					return true;
+				}	
+			}
+		}; trade.setExecutor(exe);
 	}
 }

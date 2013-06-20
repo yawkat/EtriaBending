@@ -6,6 +6,8 @@ commands:
   chunkfix:
     aliases: [fixchunk, reloadchunk]
     usage: /<command>
+  trade:
+    usage: /<command> [Player]
   clear:
     aliases: [clearinventory]
     usage: /<command>
@@ -120,6 +122,7 @@ permissions:
       eb.ignore.use: true
       eb.ignore.bypass: true
       eb.tp: true
+      eb.trade: true
       eb.displayname.other: true
       eb.tphere: true
       eb.spawn: true
