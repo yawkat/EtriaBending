@@ -69,6 +69,9 @@ public class MessagingSuite {
 				if (!s.hasPermission("eb.msg")) {
 					s.sendMessage("§cYou don't have permission to do that!");
 					return true;
+				} if (args.length < 2) {
+					s.sendMessage("§3Proper Usage: §6/msg [Player] [Message]");
+					return true;
 				} else {
 					final Player r = Bukkit.getPlayer(args[0]);
 					if (r == null) {
