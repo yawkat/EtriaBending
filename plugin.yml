@@ -120,6 +120,7 @@ permissions:
       eb.ignore.use: true
       eb.ignore.bypass: true
       eb.tp: true
+      eb.displayname.other: true
       eb.tphere: true
       eb.spawn: true
       eb.rename: true

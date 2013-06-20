@@ -329,7 +329,21 @@ public class PlayerSuite {
 					s.sendMessage("§cNot enough arguments.");
 					return true;
 				} if (args.length > 1) {
-					s.sendMessage("§cToo many arguments.");
+					if (!s.hasPermission("eb.displayname.other")) {
+						s.sendMessage("§cYou don't have permission to do that!");
+						return true;
+					}
+					String displayName = args[1];
+					String target = args[0];
+					Player player = Bukkit.getServer().getPlayer(target);
+					if (player == null) {
+						s.sendMessage("§cThat player is not online.");
+						return true;
+					}
+					player.setDisplayName(displayName);
+					s.sendMessage("§aYou have set §3" + player.getName() + "'s §adisplay name to §3" + displayName);
+					plugin.getConfig().set("displaynames." + p.getName(), displayName);
+					plugin.saveConfig();
 					return true;
 				} else {
 					String displayName = args[0];
