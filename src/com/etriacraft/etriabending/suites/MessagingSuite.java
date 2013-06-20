@@ -20,6 +20,8 @@ import com.etriacraft.etriabending.util.Utils;
 public class MessagingSuite {
 
 	public static HashMap<CommandSender, CommandSender> chatterDb = new HashMap<CommandSender, CommandSender>();
+	public static List<String> ignoring = new ArrayList();	
+	
 	static EtriaBending plugin;
 
 	public MessagingSuite(EtriaBending instance) {
@@ -73,7 +75,15 @@ public class MessagingSuite {
 						s.sendMessage("§cThat player is not online!");
 						return true;
 					}
-
+					if (plugin.getConfig().getStringList("players." + s.getName().toLowerCase() + ".ignoring").contains(r.getName().toLowerCase())) {
+						s.sendMessage("§cYou can't send a Private Message because you have ignored this player.");
+						return true;
+					}
+					ignoring = plugin.getConfig().getStringList("players." + r.getName().toLowerCase() + ".ignoring");
+					if (ignoring.contains(s.getName().toLowerCase())) {
+						s.sendMessage("§cYou can't send a Private Message because this player has ignored you.");
+						return true;
+					}
 					final String message = Strings.buildString(args, 1, " ");
 					s.sendMessage("§a[§7You§a -> §7" + r.getName() + "§a] §e" + message);
 					r.sendMessage("§a[§7" + s.getName() + "§a -> §7You§a] §e" + message);
@@ -105,6 +115,15 @@ public class MessagingSuite {
 						final CommandSender r = chatterDb.get(s);
 						if (!Bukkit.getOfflinePlayer(r.getName()).isOnline()) {
 							s.sendMessage("§7" + r.getName() + " §cis no longer online!");
+							return true;
+						}
+						if (plugin.getConfig().getStringList("players." + s.getName().toLowerCase() + ".ignoring").contains(r.getName().toLowerCase())) {
+							s.sendMessage("§cYou can't send a Private Message because you have ignored this player.");
+							return true;
+						}
+						ignoring = plugin.getConfig().getStringList("players." + r.getName().toLowerCase() + ".ignoring");
+						if (ignoring.contains(s.getName().toLowerCase())) {
+							s.sendMessage("§cYou can't send a Private Message because this player has ignored you.");
 							return true;
 						}
 						final String message = Strings.buildString(args, 0, " ");
@@ -152,44 +171,81 @@ public class MessagingSuite {
 
 		exe = new CommandExecutor() {
 			public boolean onCommand(CommandSender s, Command c, String label, String[] args) {
-				if (!s.hasPermission("eb.ignore")) {
-					s.sendMessage("§cYou don't have permission to do that!");
+
+				if (args.length == 0) {
+					s.sendMessage("§3Proper Usage:§6 /ignore [Player]");
+					return true;
 				}
-				else {
-					if (!(s instanceof Player) || args.length != 1) return false;
-
-					Player player = (Player) s;
-					Player query = plugin.getServer().getPlayer(args[0]);
-					if (query == null) {
-						s.sendMessage("§cPlayer not found.");
-						return false;
-					} else if (query.hasPermission("eb.ignore.block")) {
-						s.sendMessage("§cThat player can't be ignored.");
-					} else {
-
-						String pn = player.getName();
-						String qn = query.getName();
-						Map<String, List<String>> ignoreList = plugin.getList();
-
-						if (!ignoreList.containsKey(pn)) ignoreList.put(pn, new ArrayList<String>());
-
-						List<String> list = ignoreList.get(pn);
-						if(list.contains(qn)) {
-							list.remove(qn);
-							s.sendMessage("§cNo longer ignoring " + qn);
-						} else {
-							list.add(qn);
-							s.sendMessage("§cNow ignoring " + qn);
-						}
-						return true;
-					}
+				if (!s.hasPermission("eb.ignore.use")) {
+					s.sendMessage("§cYou don't have permission to do that!");
+					return true;
+				}
+				if (s.hasPermission("eb.ignore.bypass")) {
+					s.sendMessage("§cYou are not allowed to ignore other players.");
+					s.sendMessage("§cThis is probably because you're a staff member.");
+					return true;
+				}
+				Player p = plugin.getServer().getPlayer(args[0]);
+				if (p == null) {
+					s.sendMessage("§cThis player is not online.");
+					return true;
+				}
+				if (s == p) {
+					s.sendMessage("§cYou can't ignore yourself.");
+					return true;
+				}
+				if (p.hasPermission("eb.ignore.bypass")) {
+					s.sendMessage("§cYou are not allowed to ignore §3" + p.getName());
+					return true;
+				}
+				String lowerPlayer = s.getName().toLowerCase();
+				if (plugin.getConfig().get("players." + lowerPlayer + ".ignoring") == null) {
+					ignoring.clear();
+					ignoring.add(args[0].toLowerCase());
+					plugin.getConfig().set("players." + lowerPlayer + ".ignoring", ignoring);
+					plugin.saveConfig();
+					s.sendMessage("§bYou are now ignoring §3" + args[0]);
+					return true;
+				}
+				ignoring = plugin.getConfig().getStringList("players." + lowerPlayer + ".ignoring");
+				if (!ignoring.contains(args[0].toLowerCase())) {
+					ignoring.add(args[0].toLowerCase());
+					plugin.getConfig().set("players." + lowerPlayer + ".ignoring", ignoring);
+					plugin.saveConfig();
+					s.sendMessage("§bYou are now ignoring §3" + args[0]);
+					return true;
+				}
+				if (ignoring.contains(args[0].toLowerCase())) {
+					ignoring.remove(args[0].toLowerCase());
+					plugin.getConfig().set("players." + lowerPlayer + ".ignoring", ignoring);
+					plugin.saveConfig();
+					s.sendMessage("§cYou are no longer ignoring §3" + args[0]);
 					return true;
 				}
 				return true;
 			}
-		};ignore.setExecutor(exe);
+		}; ignore.setExecutor(exe);
 
+		exe = new CommandExecutor() {
+			public boolean onCommand(CommandSender s, Command c, String label, String[] args) {
+				if (!s.hasPermission("eb.ignore.use")) {
+					s.sendMessage("§cYou don't have permission to do that.");
+					return true;
+				}
+				String lowerPlayer = s.getName().toLowerCase();
+				if (plugin.getConfig().get("players." + lowerPlayer + ".ignoring") == null) {
+					s.sendMessage("§bYou are not ignoring anyone.");
+					return true;
+				}
+				List<String> ignored = plugin.getConfig().getStringList("players." + lowerPlayer + ".ignoring");
+				String message = "You are ignoring:";
+				for (String p : ignored) {
+					message = message + " " + p;
+				}
+				s.sendMessage("§b" + message);
+				return true;
+			}
+		}; ignorelist.setExecutor(exe);
 	}
-	
 
 }

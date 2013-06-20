@@ -1,5 +1,10 @@
 package com.etriacraft.etriabending.listeners;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import me.ryanhamshire.GriefPrevention.PlayerData;
 
@@ -14,6 +19,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
@@ -34,6 +40,9 @@ public class PlayerListener implements Listener {
 	public PlayerListener(EtriaBending instance) {
 		this.plugin = instance;
 	}
+	
+	public static List<String> ignoring = new ArrayList();
+	public static Set<Player> players = new HashSet();
 
 	public static String joinmessage;
 	public static String welcomemessage;
@@ -150,6 +159,35 @@ public class PlayerListener implements Listener {
 			TeleportCause cause = event.getCause();
 			event.getPlayer().sendMessage(ChatColor.RED + "You can't teleport while in PvP Combat.");
 			event.setCancelled(true);
+		}
+	}
+	
+	@EventHandler
+	public void playerChat(AsyncPlayerChatEvent event) {
+		Player player = event.getPlayer();
+		if (player.hasPermission("eb.ignore.bypass")) {
+			return;
+		}
+		String sPlayer = player.getName();
+		players = event.getRecipients();
+		Player[] playersOnline = Bukkit.getOnlinePlayers();
+		Player tempPlayer = null;
+		String sTempPlayer = "";
+		for (int i = 0; i < playersOnline.length; i++) {
+			tempPlayer = playersOnline[i];
+			if (tempPlayer != player) {
+				sTempPlayer = tempPlayer.getName().toLowerCase();
+				if (plugin.getConfig().getStringList("players." + sTempPlayer + ".ignoring") != null) {
+					ignoring = this.plugin.getConfig().getStringList("players." + sTempPlayer + ".ignoring");
+					for (int p = 0; p < ignoring.size(); p++) {
+						String ignored = (String)ignoring.get(p);
+						if (ignored.equalsIgnoreCase(sPlayer)) {
+							event.getRecipients().remove(tempPlayer);
+							players = event.getRecipients();
+						}
+					}
+				}
+			}
 		}
 	}
 

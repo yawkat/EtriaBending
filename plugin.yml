@@ -15,10 +15,16 @@ commands:
   item:
     aliases: [i]
     usage: /<command>
+  rename:
+    usage: /<command>
   iteminfo:
     aliases: [itemid]
     usage: /<command>
   setspawn:
+    usage: /<command>
+  ignore:
+    usage: /<command> [Player]
+  ignorelist:
     usage: /<command>
   spawnmob:
     usage: /<command>
@@ -41,8 +47,6 @@ commands:
     usage: /<command>
   hat:
     aliases: [helmet]
-    usage: /<command>
-  cow:
     usage: /<command>
   help:
     usage: /<command>
@@ -73,8 +77,6 @@ commands:
     usage: /<command>
   motd:
     usage: /<command>
-  ignore:
-    usage: /<command> [Player]
   message:
     aliases: [pm, msg, m, send, whisper, tell]
     usage: /<command>
@@ -114,12 +116,13 @@ permissions:
       eb.workbench: true
       eb.enchantingtable: true
       eb.tpa.answer: true
-      eb.cow: true
       eb.tpa: true
+      eb.ignore.use: true
+      eb.ignore.bypass: true
       eb.tp: true
       eb.tphere: true
       eb.spawn: true
-      eb.ignore: true
+      eb.rename: true
       eb.ignore.block: true
       eb.motd: true
       eb.modchat: true

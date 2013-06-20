@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -11,6 +12,7 @@ import org.bukkit.command.PluginCommand;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import com.etriacraft.etriabending.EtriaBending;
 import com.etriacraft.etriabending.Strings;
@@ -31,6 +33,7 @@ public class InventorySuite {
 		PluginCommand copyinv = plugin.getCommand("copyinv");
 		PluginCommand item = plugin.getCommand("item");
 		PluginCommand iteminfo = plugin.getCommand("iteminfo");
+		PluginCommand rename = plugin.getCommand("rename");
 		CommandExecutor exe;
 
 		exe = new CommandExecutor() {
@@ -140,6 +143,25 @@ public class InventorySuite {
 				} return true;
 			}
 		}; iteminfo.setExecutor(exe);
+		
+		exe = new CommandExecutor() {
+			public boolean onCommand(CommandSender s, Command c, String label, String[] args) {
+				if (!s.hasPermission("eb.rename")) {
+					s.sendMessage("§cYou don't have permission to do that!");
+					return true;
+				} if (args.length < 1) {
+					s.sendMessage("§cImproper Amount of Arguments.");
+					return true;
+				} else {
+					if (!(s instanceof Player)) return false;
+					final String message = Strings.buildString(args, 0, " ");
+					ItemStack material = ((Player) s).getItemInHand();
+					ItemMeta materialMeta = material.getItemMeta();
+					materialMeta.setDisplayName(message);
+					return true;
+				}
+			}
+		}; rename.setExecutor(exe);
 	}
 
 }
