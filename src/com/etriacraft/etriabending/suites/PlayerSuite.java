@@ -483,6 +483,10 @@ public class PlayerSuite {
 					s.sendMessage("§cYou can't trade with someone who is in a different gamemode than you.");
 					return true;
 				}
+				if (!t.getWorld().getName().equals(p.getWorld().getName())) {
+					s.sendMessage("§cYou can't trade with someone who is in a different world than you.");
+					return true;
+				}
 				Inventory inv = getTradeInv(p, t);
 				if (inv != null) {
 					p.sendMessage("§aResumed trading with §3" + t.getName() + "§a.");

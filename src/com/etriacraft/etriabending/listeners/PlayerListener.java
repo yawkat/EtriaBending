@@ -97,7 +97,7 @@ public class PlayerListener implements Listener {
 			if (event.getPlayer().isOp() || (event.getPlayer().hasPermission("eb.maintenance.safe"))) {
 				event.getPlayer().sendMessage("§aThis server is undergoing maintenance mode.");
 			} else {
-				event.getPlayer().kickPlayer("Server is undergoing maintenance.");
+				event.disallow(Result.KICK_OTHER, "§aYou can't join while the server is in maintenance mode.");
 			}
 		}
 	}
