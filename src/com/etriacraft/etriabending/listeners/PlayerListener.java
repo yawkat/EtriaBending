@@ -52,7 +52,7 @@ public class PlayerListener implements Listener {
 	public void onPlayerJoin(PlayerJoinEvent e) {
 		for (String o : PlayerSuite.vanishDb) {
 			// Hides invisible players from the player that is signing in.
-			if (e.getPlayer().hasPermission("ec.vanish.seehidden")) continue;
+			if (e.getPlayer().hasPermission("eb.vanish.seehidden")) continue;
 			if (Bukkit.getPlayer(o) == null) continue;
 			e.getPlayer().hidePlayer(Bukkit.getPlayer(o));
 		}

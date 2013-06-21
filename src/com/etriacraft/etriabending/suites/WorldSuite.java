@@ -95,7 +95,7 @@ public class WorldSuite {
 				if (args.length < 2) {
 					s.sendMessage("§cNot enough arguments.");
 				}
-				if (!s.hasPermission("ec.spawnmob")) {
+				if (!s.hasPermission("eb.spawnmob")) {
 					s.sendMessage("§cYou don't have permission to do that!");
 				} else {
 					final EntityType et = EntityType.fromName(args[0]);

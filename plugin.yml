@@ -3,136 +3,85 @@ version: 1.0
 main: com.etriacraft.etriabending.EtriaBending
 depends: [GriefPrevention]
 commands:
-  chunkfix:
-    aliases: [fixchunk, reloadchunk]
-    usage: /<command>
-  trade:
-    usage: /<command> [Player]
   clear:
-    aliases: [clearinventory]
-    usage: /<command>
   copyinv:
-    aliases: [copyinventory]
-    usage: /<command>
   item:
     aliases: [i]
-    usage: /<command>
-  rename:
-    usage: /<command>
   iteminfo:
-    aliases: [itemid]
-    usage: /<command>
-  setspawn:
-    usage: /<command>
-  ignore:
-    usage: /<command> [Player]
-  ignorelist:
-    usage: /<command>
-  spawnmob:
-    usage: /<command>
-  weather:
-    usage: /<command>
-  # Player Suite
-  displayname:
-    usage: /<command>
-    aliases: [dn,display]
-  savexp:
-    usage: /<command>
-  gamemode:
-    aliases: [gm]
-    usage: /<command>
-  getpos:
-    aliases: [position]
-    usage: /<command>
-  god:
-    aliases: [jesus, buddha]
-    usage: /<command>
-  hat:
-    aliases: [helmet]
-    usage: /<command>
-  help:
-    usage: /<command>
-  vanish:
-    usage: /<command>]
-  maintenance:
-    usage: /<command>
-  thor:
-    usage: /<command>
-  workbench:
-    aliases: [wb]
-    usage: /<command>
-  enchantingtable:
-    aliases: [et]
-    usage: /<command>
-  tp:
-    aliases: [teleport]
-    usage: /<command>
-  tpa:
-    aliases: [call, tpr]
-    usage: /<command>
-  tphere:
-    aliases: [bring, summon]
-    usage: /<command>
-  eb:
-    usage: /<command>
-  spawn:
-    usage: /<command>
   motd:
-    usage: /<command>
   message:
-    aliases: [pm, msg, m, send, whisper, tell]
-    usage: /<command>
+    aliases: [pm,whisper,tell,message]
   reply:
     aliases: [r]
-    usage: /<command>
   modchat:
-    aliases: [mc, ac, adminchat]
-    usage: /<command>
-  ip:
-    usage: /<command>
+    aliases: [mc,ac,adminchat]
+  ignore:
+  ignorelist:
+  gamemode:
+    aliases: [gm]
+  getpos:
+  god:
+  hat:
+  help:
+  vanish:
+  workbench:
+    aliases: [wb]
+  enchantingtable:
+    aliases: [et]
+  displayname:
+    aliases: [nick,dn]
+  eb:
+  maintenance:
+  trade:
+  spawn:
+  tpa:
+  tp:
+  tphere:
+  chunkfix:
+  setspawn:
+  spawnmob:
+  weather:
 permissions:
   eb.admin:
     default: false
     children:
-      eb.ip: true
-      eb.chunkfix: true
       eb.clear: true
+      eb.clear.other: true
       eb.copyinv: true
       eb.item: true
       eb.iteminfo: true
-      eb.setspawn: true
-      eb.spawnmob: true
-      eb.weather: true
-      # Player Suite
-      eb.help: true
-      eb.hat: true
-      eb.god: true
-      eb.thor: true
-      eb.god.others: true
-      eb.getpos: true
+      eb.motd: true
+      eb.msg: true
+      eb.reply: true
+      eb.msg.spy: true
+      eb.modchat: true
+      eb.ignore.use: true
+      eb.ignore.bypass: true
       eb.gamemode: true
-      eb.eb: true
+      eb.gamemode.other: true
+      eb.getpos: true
+      eb.god.other: true
+      eb.god: true
+      eb.hat: true
+      eb.help: true
       eb.vanish: true
-      eb.vanish.seehidden: true
       eb.vanish.alert: true
       eb.workbench: true
       eb.enchantingtable: true
-      eb.tpa.answer: true
-      eb.tpa: true
-      eb.ignore.use: true
-      eb.ignore.bypass: true
-      eb.tp: true
-      eb.trade: true
+      eb.displayname: true
       eb.displayname.other: true
-      eb.tphere: true
-      eb.spawn: true
-      eb.rename: true
-      eb.ignore.block: true
-      eb.motd: true
-      eb.modchat: true
+      eb.eb: true
       eb.maintenance: true
       eb.maintenance.safe: true
-      eb.reply: true
-      eb.msg: true
-      eb.msg.spy: true
-      eb.displayname: true
+      eb.trade: true
+      eb.spawn: true
+      eb.tpa.answer: true
+      eb.tp: true
+      eb.tphere: true
+      eb.chunkfix: true
+      eb.setspawn: true
+      eb.spawnmob: true
+      eb.weather: true
+      eb.vanish.seehidden: true
+      eb.loginlimit.bypass: true
+      eb.savexp: true

@@ -126,7 +126,12 @@ public class PlayerSuite {
 					s.sendMessage("§cYou don't have permission to do that!");
 				} else {
 					final Player p;
-					if (args.length >= 1) p = Bukkit.getPlayer(args[0]);
+					if (args.length >= 1) {
+						if (!s.hasPermission("eb.gamemode.other")) {
+							s.sendMessage("§cYou don't have permission to do that!");
+						}
+						p = Bukkit.getPlayer(args[0]);
+					}
 					else {
 						if (!(s instanceof Player)) return false;
 						p = (Player) s;
@@ -169,7 +174,7 @@ public class PlayerSuite {
 				} else {
 					final Player p;
 					if (args.length >= 1) {
-						if (!s.hasPermission("ec.god.other")) {
+						if (!s.hasPermission("eb.god.other")) {
 							s.sendMessage("§cYou don't have permission to do that!");
 							return true;
 						}
@@ -319,24 +324,6 @@ public class PlayerSuite {
 			public boolean onCommand(CommandSender s, Command c, String label, String[] args) {
 				final Player p = (Player) s;
 				if (!(s instanceof Player)) {
-					s.sendMessage("§cThis command is only available to players.");
-				}
-				if (!s.hasPermission("eb.savexp")) {
-					s.sendMessage("§cYou don't have permission to do that!");
-					return true;
-				} 
-				s.sendMessage("§cHey There! Thanks for purchasing this command!");
-				s.sendMessage("§cYou no longer need to use the command to activate.");
-				s.sendMessage("§cYour EXP will save automatically now, and you never have to reactivate it.");
-				return true;
-			}
-		}; savexp.setExecutor(exe);
-
-		exe = new CommandExecutor() {
-			@Override
-			public boolean onCommand(CommandSender s, Command c, String label, String[] args) {
-				final Player p = (Player) s;
-				if (!(s instanceof Player)) {
 					s.sendMessage("§cThis command is only usable by players.");
 				}
 				if (!s.hasPermission("eb.displayname")) {
@@ -384,7 +371,7 @@ public class PlayerSuite {
 					s.sendMessage("§cToo many arguments.");
 					return true;
 				} else {
-					s.sendMessage("§cEtriaBending reloaded.");
+					s.sendMessage("§aEtriaBending reloaded.");
 					plugin.reloadConfig();
 				} return true;
 			}
@@ -419,43 +406,6 @@ public class PlayerSuite {
 				return true;
 			}
 		}; maintenance.setExecutor(exe);
-
-		exe = new CommandExecutor() {
-			@Override
-			public boolean onCommand(CommandSender s, Command c, String label, String[] args) {
-				if (!s.hasPermission("eb.thor")) {
-					s.sendMessage("§cYou don't have permission to do that!");
-					return true;
-				} else {
-					if (args.length != 2) {
-						s.sendMessage("§3Correct Usage: §c/thor <player> <amount>");
-						return true;
-					}
-					String strickenplayer = args[0];
-					int amount = Integer.parseInt(args[1]);
-
-					Player p = plugin.getServer().getPlayer(strickenplayer);
-
-					if (p == null) {
-						s.sendMessage("§cThat player is not online.");
-						return true;
-					}
-
-					final Location playerLocation = p.getLocation();
-					final World world = p.getWorld();
-
-					for(int i = 0; i < amount; i++)
-						plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable(){ public void run(){
-							world.strikeLightningEffect(playerLocation);
-						} }, (int) (i * 5 + Math.random() * 5));
-
-					Bukkit.broadcastMessage("§3" + p.getName() + " §chas been stricken by lightning §3" + amount + " times §cat the hands of Thor.");
-					Bukkit.broadcastMessage("§cWe wish §3" + p.getName() + "§c a speedy recovery.");
-
-				}
-				return true;
-			}
-		}; thor.setExecutor(exe);
 		
 		exe = new CommandExecutor() {
 			@Override
