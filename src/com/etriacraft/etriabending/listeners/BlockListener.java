@@ -26,6 +26,10 @@ public class BlockListener implements Listener {
 	@EventHandler
 	public void onPlayerBuild(BlockPlaceEvent e) {
 		if (plugin.getConfig().getStringList("NoBuild").contains(e.getPlayer().getWorld().getName())) {
+			if (e.getPlayer().hasPermission("eb.nobuild.override")) {
+				e.setCancelled(false);
+				return;
+			}
 			e.setCancelled(true);
 		}
 	}
@@ -33,6 +37,10 @@ public class BlockListener implements Listener {
 	@EventHandler
 	public void onPlayerBreak(BlockBreakEvent e) {
 		if (plugin.getConfig().getStringList("NoBuild").contains(e.getPlayer().getWorld().getName())) {
+			if (e.getPlayer().hasPermission("eb.nobuild.override")) {
+				e.setCancelled(false);
+				return;
+			}
 			e.setCancelled(true);
 		}
 	}

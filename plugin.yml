@@ -10,11 +10,11 @@ commands:
   iteminfo:
   motd:
   message:
-    aliases: [pm,whisper,tell,message]
+    aliases: [pm, whisper, tell, msg]
   reply:
     aliases: [r]
   modchat:
-    aliases: [mc,ac,adminchat]
+    aliases: [mc, ac, adminchat]
   ignore:
   ignorelist:
   gamemode:
@@ -76,6 +76,7 @@ permissions:
       eb.trade: true
       eb.spawn: true
       eb.tpa.answer: true
+      eb.nobuild.override: true
       eb.tp: true
       eb.tphere: true
       eb.chunkfix: true

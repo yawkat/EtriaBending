@@ -9,5 +9,7 @@ messaging:
 PlayerHomeLimit: 300
 NoBuild:
 - Arena
+NoTrade:
+- Arena
 DisplayNames:
   player1: player2

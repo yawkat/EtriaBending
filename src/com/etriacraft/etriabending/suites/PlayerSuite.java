@@ -433,6 +433,10 @@ public class PlayerSuite {
 					s.sendMessage("§cYou can't trade with someone who is in a different gamemode than you.");
 					return true;
 				}
+				if (plugin.getConfig().getStringList("NoTrade").contains(p.getWorld().getName())) {
+					s.sendMessage("§cYou can't open the trading interface in this world.");
+					return true;
+				}
 				if (!t.getWorld().getName().equals(p.getWorld().getName())) {
 					s.sendMessage("§cYou can't trade with someone who is in a different world than you.");
 					return true;
