@@ -30,6 +30,11 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+
+import tools.BendingType;
+import tools.Tools;
+
 import com.etriacraft.etriabending.EtriaBending;
 import com.etriacraft.etriabending.suites.MessagingSuite;
 import com.etriacraft.etriabending.suites.PlayerSuite;
@@ -49,6 +54,24 @@ public class PlayerListener implements Listener {
 	public static String welcomemessage;
 	public static String quitmessage;
 
+	
+	@EventHandler
+	public void onChangeWorld(PlayerChangedWorldEvent e) {
+		Player player = e.getPlayer();
+		if (player.getWorld().getName().equalsIgnoreCase("Arena")) {
+			Inventory inv = player.getInventory();
+			if (Tools.isBender(player.getName(), BendingType.Water)) {
+				if (!inv.contains(373)) {
+					player.sendMessage("§bDoesn't look like you have a Water Bottle.");
+					player.sendMessage("§bTo make it fair, you will receive one to Bend.");
+					player.sendMessage("§bIf you lose it, simply return to the arena to get a new one.");
+					ItemStack is = new ItemStack(Material.POTION);
+					inv.addItem(is);
+				}
+			}
+			
+		}
+	}
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent e) {
 		for (String o : PlayerSuite.vanishDb) {

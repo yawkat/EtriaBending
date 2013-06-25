@@ -73,7 +73,7 @@ public class TeleportSuite {
 					}
 					if (tpRequestDb.get(s.getName()).contains(p.getName())) {
 						PlayerUtils.teleport(p, ((Player) s).getLocation());
-						p.sendMessage("§e" + s.getName() + "§aaccepted your teleport request");
+						p.sendMessage("§e" + s.getName() + "§a accepted your teleport request");
 						s.sendMessage("§aYou accepted the teleport request from§e " + p.getName());
 						tpRequestDb.get(s.getName()).remove(p.getName());
 					} else s.sendMessage("§cThis player hasn't request teleport permission from you.");
