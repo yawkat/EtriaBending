@@ -188,7 +188,12 @@ public class PlayerListener implements Listener {
 	
 	@EventHandler
 	public void playerChat(AsyncPlayerChatEvent event) {
+		String message = event.getMessage();
+		String message2 = Utils.colorize(message);
 		Player player = event.getPlayer();
+		if (player.hasPermission("eb.chat.color")) {
+			event.setMessage(message2);
+		}
 		if (player.hasPermission("eb.ignore.bypass")) {
 			return;
 		}

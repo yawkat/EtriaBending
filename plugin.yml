@@ -72,6 +72,7 @@ permissions:
       eb.displayname.other: true
       eb.eb: true
       eb.maintenance: true
+      eb.chat.color: true
       eb.maintenance.safe: true
       eb.trade: true
       eb.spawn: true
