@@ -55,6 +55,10 @@ public class InventorySuite {
 					}
 
 					p.getInventory().clear();
+					p.getInventory().setHelmet(null);
+					p.getInventory().setChestplate(null);
+					p.getInventory().setLeggings(null);
+					p.getInventory().setBoots(null);
 					p.sendMessage("§aInventory Cleared.");
 					return true;
 				} return true;
