@@ -8,6 +8,7 @@ commands:
   item:
     aliases: [i]
   iteminfo:
+  hug:
   motd:
   message:
     aliases: [pm, whisper, tell, msg]
@@ -65,6 +66,7 @@ permissions:
       eb.hat: true
       eb.help: true
       eb.vanish: true
+      eb.hug: true
       eb.vanish.alert: true
       eb.workbench: true
       eb.enchantingtable: true

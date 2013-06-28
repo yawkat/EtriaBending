@@ -111,14 +111,35 @@ public class PlayerSuite {
 		PluginCommand vanish = plugin.getCommand("vanish");
 		PluginCommand workbench = plugin.getCommand("workbench");
 		PluginCommand enchantingtable = plugin.getCommand("enchantingtable");
-		PluginCommand savexp = plugin.getCommand("savexp");
 		PluginCommand displayname = plugin.getCommand("displayname");
 		PluginCommand eb = plugin.getCommand("eb");
 		PluginCommand maintenance = plugin.getCommand("maintenance");
 		PluginCommand trade = plugin.getCommand("trade");
-		PluginCommand thor = plugin.getCommand("thor");
+		PluginCommand hug = plugin.getCommand("hug");
 		CommandExecutor exe;
 
+		exe = new CommandExecutor() {
+			@Override
+			public boolean onCommand(CommandSender s, Command c, String label, String[] args) {
+				if (!s.hasPermission("eb.hug")) {
+					s.sendMessage("§cYou don't have permission to do that!");
+					return true;
+				}
+				if (args.length != 1) {
+					s.sendMessage("§3Proper Usage: §6/hug [Player]");
+					return true;
+				}
+				Player p = Bukkit.getPlayer(args[0]);
+				if (p == null) {
+					s.sendMessage("§cThat player is not online.");
+					return true;
+				}
+				Bukkit.getServer().broadcastMessage("§3" + s.getName() + " §2has hugged §3" + p.getName() + "§3! §d<3");
+				return true;
+			}
+		}; hug.setExecutor(exe);
+		
+		
 		exe = new CommandExecutor() {
 			@Override
 			public boolean onCommand(CommandSender s, Command c, String label, String[] args) {
