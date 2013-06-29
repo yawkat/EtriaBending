@@ -469,7 +469,7 @@ public class PlayerSuite {
 					return true;
 				}
 				if (tradedb.containsKey(t.getName())) {
-					inv = plugin.getServer().createInventory(null, 36, "Trade");
+					inv = plugin.getServer().createInventory(null, 54, "Trade");
 					p.sendMessage("§aOpened trading interface.");
 					p.openInventory(inv);
 					t.openInventory(inv);
