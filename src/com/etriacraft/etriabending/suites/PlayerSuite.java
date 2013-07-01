@@ -30,18 +30,18 @@ public class PlayerSuite {
 	public static boolean maintenanceon = false;
 
 	// Methods
-	
+
 	public static void sendTradeRequest(Player target, Player sender) {
 		tradedb.put(sender.getName(), target.getName());
 		target.sendMessage("§3" + sender.getName() + " §a has requested to trade with you.");
 		target.sendMessage("§aType §3/trade " + sender.getName() + " §a to accept the trade.");
 	}
-	
+
 	public static Inventory getTradeInv(Player p, Player t) {
 		synchronized (trades) {
 			for (final HashMap<String, String> set : trades.keySet()) {
 				if ((set.containsKey(t.getName()) && set.get(t.getName()).equals(p.getName())) || (set.containsKey(p.getName()) && set.get(p.getName()).equals(t.getName())))
-				return trades.get(set);
+					return trades.get(set);
 			}
 		}
 		return null;
@@ -94,6 +94,7 @@ public class PlayerSuite {
 	public static Set<String> noexpdropDB = new HashSet<String>();
 	public static final HashMap<String, String> tradedb = new HashMap<String, String>();
 	public static final HashMap<HashMap<String, String>, Inventory> trades = new HashMap<HashMap<String, String>, Inventory>();
+	public static HashMap<String, Location> modmodedb = new HashMap();
 
 	EtriaBending plugin;
 
@@ -114,9 +115,60 @@ public class PlayerSuite {
 		PluginCommand displayname = plugin.getCommand("displayname");
 		PluginCommand eb = plugin.getCommand("eb");
 		PluginCommand maintenance = plugin.getCommand("maintenance");
+		PluginCommand modmode = plugin.getCommand("modmode");
 		PluginCommand trade = plugin.getCommand("trade");
 		PluginCommand hug = plugin.getCommand("hug");
 		CommandExecutor exe;
+
+		exe = new CommandExecutor() {
+			@Override
+			public boolean onCommand(CommandSender s, Command c, String label, String[] args) {
+				if (!s.hasPermission("eb.modmode")) {
+					s.sendMessage("§cYou don't have permission to do that!");
+					return true;
+				}
+				if (args.length > 0) {
+					s.sendMessage("§3Proper Usage: §5/modmode");
+					return true;
+				}
+				Player p = (Player) s;
+				Location loc = p.getLocation();
+				if (modmodedb.containsKey(p.getName())) {
+					p.teleport(modmodedb.get(p.getName()));
+					s.sendMessage("§aSent back to your original location.");
+					if (PlayerSuite.isVanished(p)) {
+						vanishDb.remove(p.getName());
+						s.sendMessage("§aYou have been unvanished.");
+					}
+					modmodedb.remove(p.getName());
+					for(Player player: Bukkit.getOnlinePlayers()) {
+						if ((player.hasPermission("eb.msg.spy"))) {
+							player.sendMessage("§3" + p.getName() + " §a has left Mod Mode.");
+						}
+					}
+					return true;
+				}
+				if (!modmodedb.containsKey(p.getName())) {
+					modmodedb.put(p.getName(), loc);
+					s.sendMessage("§aYou have turned Moderator Mode on.");
+					s.sendMessage("§aYou can leave it by running the command again.");
+					if (PlayerSuite.isVanished(p)) {
+						s.sendMessage("§aYou are already vanished.");
+					}
+					if (!PlayerSuite.isVanished(p)) {
+						vanishDb.add(p.getName());
+						s.sendMessage("§aYou have been vanished.");
+					}
+					for(Player player: Bukkit.getOnlinePlayers()) {
+						if ((player.hasPermission("eb.msg.spy"))) {
+							player.sendMessage("§3" + p.getName() + "§a has entered Mod Mode.");
+						}
+					}
+					return true;
+				}
+				return true;
+			}
+		}; modmode.setExecutor(exe);
 
 		exe = new CommandExecutor() {
 			@Override
@@ -138,8 +190,8 @@ public class PlayerSuite {
 				return true;
 			}
 		}; hug.setExecutor(exe);
-		
-		
+
+
 		exe = new CommandExecutor() {
 			@Override
 			public boolean onCommand(CommandSender s, Command c, String label, String[] args) {
@@ -281,36 +333,46 @@ public class PlayerSuite {
 			public boolean onCommand(CommandSender s, Command c, String label, String[] args) {
 				if (!s.hasPermission("eb.vanish")) {
 					s.sendMessage("§cYou don't have permission to do that!");
-				} else {
-
-					final Player p;
-					if (args.length >= 1) p = Bukkit.getPlayer(args[0]);
-					else {
-						if (!(s instanceof Player)) return false;
-						p = (Player) s;
-					}
-					if (p == null) {
-						s.sendMessage("§cThat player is not online.");
-						return true;
-					}
-
-					if (!isVanished(p)) {
-						godDb.add(p.getName());
-						p.sendMessage("§aPoof!");
-					} else {
-						if (p.getAllowFlight()) {
-							s.sendMessage("§cYou can't unvanish right now, perhaps you're in creative mode?");
-							return true;
-						}
-						godDb.remove(p.getName());
-						p.sendMessage("§aYou are now visible.");
-					}
-					setVanished(p, !isVanished(p));
-					Utils.serverBroadcast("§e" + p.getName() + " §ahas " + (isVanished(p)? "vanished" : "reappeared"), "eb.vanish.alert");
 					return true;
-				} return true;
+				} else {
+					s.sendMessage("§cThis command no longer exists.");
+					s.sendMessage("§cTo vanish you must enter ModMode via §3/modmode");
+					return true;
+				}
 			}
 		}; vanish.setExecutor(exe);
+//				if (!s.hasPermission("eb.vanish")) {
+//					s.sendMessage("§cYou don't have permission to do that!");
+//				} else {
+//
+//					final Player p;
+//					if (args.length >= 1) p = Bukkit.getPlayer(args[0]);
+//					else {
+//						if (!(s instanceof Player)) return false;
+//						p = (Player) s;
+//					}
+//					if (p == null) {
+//						s.sendMessage("§cThat player is not online.");
+//						return true;
+//					}
+//
+//					if (!isVanished(p)) {
+//						godDb.add(p.getName());
+//						p.sendMessage("§aPoof!");
+//					} else {
+//						if (p.getAllowFlight()) {
+//							s.sendMessage("§cYou can't unvanish right now, perhaps you're in creative mode?");
+//							return true;
+//						}
+//						godDb.remove(p.getName());
+//						p.sendMessage("§aYou are now visible.");
+//					}
+//					setVanished(p, !isVanished(p));
+//					Utils.serverBroadcast("§e" + p.getName() + " §ahas " + (isVanished(p)? "vanished" : "reappeared"), "eb.vanish.alert");
+//					return true;
+//				} return true;
+//			}
+//		}; vanish.setExecutor(exe);
 
 		exe = new CommandExecutor() {
 			public boolean onCommand(CommandSender s, Command c, String label, String[] args) {
@@ -427,7 +489,7 @@ public class PlayerSuite {
 				return true;
 			}
 		}; maintenance.setExecutor(exe);
-		
+
 		exe = new CommandExecutor() {
 			@Override
 			public boolean onCommand(CommandSender s, Command c, String label, String[] args) {
@@ -439,7 +501,7 @@ public class PlayerSuite {
 					s.sendMessage("§3Proper Usage: §6/trade [Player]");
 					return true;
 				}
-				
+
 				Player p = (Player) s;
 				Player t = plugin.getServer().getPlayer(args[0]);
 				if (t == null || PlayerSuite.isVanished(t)) {

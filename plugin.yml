@@ -24,6 +24,7 @@ commands:
   god:
   hat:
   help:
+  modmode:
   vanish:
   workbench:
     aliases: [wb]
@@ -76,6 +77,7 @@ permissions:
       eb.maintenance: true
       eb.chat.color: true
       eb.maintenance.safe: true
+      eb.modmode: true
       eb.trade: true
       eb.spawn: true
       eb.tpa.answer: true

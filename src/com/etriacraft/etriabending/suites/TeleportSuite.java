@@ -123,37 +123,40 @@ public class TeleportSuite {
 			public boolean onCommand(CommandSender s, Command c, String label, String[] args) {
 				if (!s.hasPermission("eb.tp")) {
 					s.sendMessage("§cYou don't have permission to do that!");
-				} else {
-					Location loc;
-					if (args.length >= 3) { // Teleporting to coords
-						try {
-							double x = Double.parseDouble(args[0]);
-							double y = Double.parseDouble(args[1]);
-							double z = Double.parseDouble(args[2]);
-							World w = (args.length >= 4)? Bukkit.getWorld(args[3]) : ((Player) s).getWorld();
-							if (w == null) {
-								s.sendMessage("§cThat world doesn't exist.");
-								return true;
-							}
-							loc = new Location(w, x, y, z);
-							s.sendMessage(String.format("§aTeleporting to: X:§e %1$s §aY:§e %2$s §aZ:§e %3$s$a in§e %4$s", x, y, z, w.getName()));
-						} catch (NumberFormatException e) {
-							s.sendMessage("Invalid coordinates");
-							return true;
-						}
-					} else { // Teleporting to a player
-						Player p = Bukkit.getPlayer(args[0]);
-						if (p == null) {
-							s.sendMessage("§cThat player is not online.");
-							return true;
-						}
-						loc = p.getLocation();
-						s.sendMessage("§aTeleport to§e " + p.getName());
-					}
-
-					PlayerUtils.teleport((Player) s, loc);
+					return true;
+				} if (!PlayerSuite.modmodedb.containsKey(s.getName())) {
+					s.sendMessage("§cYou can only use the /tp command in ModMode.");
+					s.sendMessage("§cTurn it on using §3/modmode");
 					return true;
 				}
+				Location loc;
+				if (args.length >= 3) { // Teleporting to coords
+					try {
+						double x = Double.parseDouble(args[0]);
+						double y = Double.parseDouble(args[1]);
+						double z = Double.parseDouble(args[2]);
+						World w = (args.length >= 4)? Bukkit.getWorld(args[3]) : ((Player) s).getWorld();
+						if (w == null) {
+							s.sendMessage("§cThat world doesn't exist.");
+							return true;
+						}
+						loc = new Location(w, x, y, z);
+						s.sendMessage(String.format("§aTeleporting to: X:§e %1$s §aY:§e %2$s §aZ:§e %3$s §ain§e %4$s", x, y, z, w.getName()));
+					} catch (NumberFormatException e) {
+						s.sendMessage("Invalid coordinates");
+						return true;
+					}
+				} else { // Teleporting to a player
+					Player p = Bukkit.getPlayer(args[0]);
+					if (p == null) {
+						s.sendMessage("§cThat player is not online.");
+						return true;
+					}
+					loc = p.getLocation();
+					s.sendMessage("§aTeleport to§e " + p.getName());
+				}
+
+				PlayerUtils.teleport((Player) s, loc);
 				return true;
 			}
 		}; tp.setExecutor(exe);

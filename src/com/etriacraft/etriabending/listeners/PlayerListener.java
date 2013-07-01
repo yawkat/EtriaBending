@@ -81,9 +81,9 @@ public class PlayerListener implements Listener {
 			e.getPlayer().hidePlayer(Bukkit.getPlayer(o));
 		}
 		// If the player forgot to unvanish before signing out, unvanish them now.
-		if (PlayerSuite.isVanished(e.getPlayer())) {
-			PlayerSuite.setVanished(e.getPlayer(), false);
-			e.getPlayer().sendMessage("§cYou are no longer vanished.");
+		if (PlayerSuite.modmodedb.containsKey(e.getPlayer().getName())) {
+			e.getPlayer().sendMessage("§cYou have been removed from Moderator Mode.");
+			e.getPlayer().teleport(PlayerSuite.modmodedb.get(e.getPlayer().getName()));
 		}
 
 		MessagingSuite.showMotd(e.getPlayer());
