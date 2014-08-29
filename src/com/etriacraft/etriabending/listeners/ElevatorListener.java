@@ -59,12 +59,12 @@ public static final byte[] SIGN_DRECTIONS = {5, 3, 4, 2};
             Sign s = (Sign) b.getState();
             if (s.getLine(1).equalsIgnoreCase("[Elevator]")) {
                 if (teleport(e.getPlayer(), s.getWorld(), y)) {
-                    e.getPlayer().sendMessage("§eGoing " + (s.getLine(0).isEmpty()? "down.." :"to§r " + s.getLine(0)));
+                    e.getPlayer().sendMessage("Â§eGoing " + (s.getLine(0).isEmpty()? "down.." :"toÂ§r " + s.getLine(0)));
                 }
                 return;
             }
         }
-        e.getPlayer().sendMessage("§cThere was no Elevator found below this");
+        e.getPlayer().sendMessage("Â§cThere was no Elevator found below this");
     } else {
         e.setCancelled(true);
         sign.update(true);
@@ -74,12 +74,12 @@ public static final byte[] SIGN_DRECTIONS = {5, 3, 4, 2};
             Sign s = (Sign)b.getState();
             if (s.getLine(1).equalsIgnoreCase("[Elevator]")) {
                 if (teleport(e.getPlayer(), s.getWorld(), y)) {
-                    e.getPlayer().sendMessage("§eGoing " + (s.getLine(0).isEmpty()? "up.." : "to§r " + s.getLine(0)));
+                    e.getPlayer().sendMessage("Â§eGoing " + (s.getLine(0).isEmpty()? "up.." : "toÂ§r " + s.getLine(0)));
                 }
                 return;
             }
         }
-        e.getPlayer().sendMessage("§cThere was no Elevator found above this");
+        e.getPlayer().sendMessage("Â§cThere was no Elevator found above this");
     }
 }
 
@@ -98,7 +98,7 @@ public void onSignChange(SignChangeEvent e) {
         }
     }
 
-    e.getPlayer().sendMessage("§eElevator created " + (found? "and linked" : ""));
+    e.getPlayer().sendMessage("Â§eElevator created " + (found? "and linked" : ""));
     e.setLine(1, "[Elevator]");
     ((Sign) e.getBlock().getState()).update();
 }
@@ -111,7 +111,7 @@ private boolean teleport(Player player, World w, int y) {
             && safeLiftIds.contains(w.getBlockAt(loc.getBlockX(), (y - 2), loc.getBlockZ()).getTypeId()))
             || (!safeLiftIds.contains(w.getBlockAt(loc.getBlockX(), (y), loc.getBlockZ()).getTypeId())
             || !safeLiftIds.contains(w.getBlockAt(loc.getBlockX(), (y + 1), loc.getBlockZ()).getTypeId()))) {
-        player.sendMessage("§cTeleport location is not safe!");
+        player.sendMessage("Â§cTeleport location is not safe!");
         return false;
     }
 

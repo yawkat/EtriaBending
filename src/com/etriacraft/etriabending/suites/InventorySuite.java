@@ -36,12 +36,12 @@ public class InventorySuite {
 			@Override
 			public boolean onCommand(CommandSender s, Command c, String label, String[] args) {
 				if (!s.hasPermission("eb.clear")) {
-					s.sendMessage("§cYou don't have permission to do that!");
+					s.sendMessage("Â§cYou don't have permission to do that!");
 				} else {
 					final Player p;
 					if (args.length >= 1) {
 						if (!s.hasPermission("eb.clear.other")) {
-							s.sendMessage("§cYou don't have permission to do that!");
+							s.sendMessage("Â§cYou don't have permission to do that!");
 							return true;
 						}
 						p = Bukkit.getPlayer(args[0]);
@@ -50,7 +50,7 @@ public class InventorySuite {
 						p = (Player) s;
 					}
 					if (p == null) {
-						s.sendMessage("§cThat player is not online.");
+						s.sendMessage("Â§cThat player is not online.");
 						return true;
 					}
 
@@ -59,7 +59,7 @@ public class InventorySuite {
 					p.getInventory().setChestplate(null);
 					p.getInventory().setLeggings(null);
 					p.getInventory().setBoots(null);
-					p.sendMessage("§aInventory Cleared.");
+					p.sendMessage("Â§aInventory Cleared.");
 					return true;
 				} return true;
 			}
@@ -68,14 +68,14 @@ public class InventorySuite {
 		exe = new CommandExecutor() {
 			public boolean onCommand(CommandSender s, Command c, String label, String[] args) {
 				if (!s.hasPermission("eb.copyinv")) {
-					s.sendMessage("§cYou don't have permission to do that!");
+					s.sendMessage("Â§cYou don't have permission to do that!");
 				} else {
 					if (!(s instanceof Player)) return false;
 
 					if (args.length >= 1) {
 						Player p = Bukkit.getPlayer(args[0]);
 						if (p == null) {
-							s.sendMessage("§cThat player is not online.");
+							s.sendMessage("Â§cThat player is not online.");
 							return true;
 						}
 
@@ -83,14 +83,14 @@ public class InventorySuite {
 							invRestoreDb.put(s.getName(), ((Player) s).getInventory().getContents());
 						}
 						((Player) s).getInventory().setContents(p.getInventory().getContents());
-						s.sendMessage("§aCpoied inventory of §e" + p.getName());
+						s.sendMessage("Â§aCpoied inventory of Â§e" + p.getName());
 					} else {
 						if (invRestoreDb.containsKey(s.getName())) {
 							((Player) s).getInventory().setContents(invRestoreDb.get(s.getName()));
 							invRestoreDb.remove(s.getName());
-							s.sendMessage("§aInventory restored.");
+							s.sendMessage("Â§aInventory restored.");
 						} else {
-							s.sendMessage("§cYou had no inventory to restore.");
+							s.sendMessage("Â§cYou had no inventory to restore.");
 						}
 					}
 					return true;
@@ -101,13 +101,13 @@ public class InventorySuite {
 		exe = new CommandExecutor() {
 			public boolean onCommand(CommandSender s, Command c, String label, String[] args) {
 				if (!s.hasPermission("eb.item")) {
-					s.sendMessage("§cYou don't have permisison to do that!");
+					s.sendMessage("Â§cYou don't have permisison to do that!");
 				} else {
 					if (!(s instanceof Player)) return false;
 
 					ItemStack is = Utils.parseItemStack(args[0]);
 					if (is == null) {
-						s.sendMessage("§cInvalid Item Info.");
+						s.sendMessage("Â§cInvalid Item Info.");
 						return true;
 					}
 
@@ -119,7 +119,7 @@ public class InventorySuite {
 						return true;
 					}
 
-					s.sendMessage("§aGiving§e " + is.getAmount() + " " + Strings.toTitle(is.getType().name()) + ((s != p)? " §ato§e " + p.getName() : ""));
+					s.sendMessage("Â§aGivingÂ§e " + is.getAmount() + " " + Strings.toTitle(is.getType().name()) + ((s != p)? " Â§atoÂ§e " + p.getName() : ""));
 					p.getInventory().addItem(is);
 					return true;
 				} return true;
@@ -130,18 +130,18 @@ public class InventorySuite {
 		exe = new CommandExecutor() {
 			public boolean onCommand(CommandSender s, Command c, String label, String[] args) {
 				if (!s.hasPermission("eb.iteminfo")) {
-					s.sendMessage("§cYou don't have permission to do that.");
+					s.sendMessage("Â§cYou don't have permission to do that.");
 				} else {
 					if (!(s instanceof Player)) return false;
 
 					ItemStack is = ((Player) s).getItemInHand();
 
-					s.sendMessage("§aItem Information:");
-					s.sendMessage("§a" + Strings.toTitle(is.getType().name()) + " -§e " + Integer.toString(is.getTypeId()) + (is.getDurability() != 0 ? "§a:" + is.getDurability() : ""));
+					s.sendMessage("Â§aItem Information:");
+					s.sendMessage("Â§a" + Strings.toTitle(is.getType().name()) + " -Â§e " + Integer.toString(is.getTypeId()) + (is.getDurability() != 0 ? "Â§a:" + is.getDurability() : ""));
 
 					if (is.getEnchantments().size() <1) return true;
 					for (Map.Entry<Enchantment, Integer> ench : is.getEnchantments().entrySet()) {
-						s.sendMessage("§7§o" + Strings.toTitle(ench.getKey().getName()) + " " + Strings.toRomanNumeral(ench.getValue()));
+						s.sendMessage("Â§7Â§o" + Strings.toTitle(ench.getKey().getName()) + " " + Strings.toRomanNumeral(ench.getValue()));
 					}
 					return true;
 				} return true;

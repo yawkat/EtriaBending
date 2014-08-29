@@ -1,9 +1,6 @@
 package com.etriacraft.etriabending.listeners;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import me.ryanhamshire.GriefPrevention.PlayerData;
@@ -62,9 +59,9 @@ public class PlayerListener implements Listener {
 			Inventory inv = player.getInventory();
 			if (Tools.isBender(player.getName(), BendingType.Water)) {
 				if (!inv.contains(373)) {
-					player.sendMessage("§bDoesn't look like you have a Water Bottle.");
-					player.sendMessage("§bTo make it fair, you will receive one to Bend.");
-					player.sendMessage("§bIf you lose it, simply return to the arena to get a new one.");
+					player.sendMessage("Â§bDoesn't look like you have a Water Bottle.");
+					player.sendMessage("Â§bTo make it fair, you will receive one to Bend.");
+					player.sendMessage("Â§bIf you lose it, simply return to the arena to get a new one.");
 					ItemStack is = new ItemStack(Material.POTION);
 					inv.addItem(is);
 				}
@@ -82,7 +79,7 @@ public class PlayerListener implements Listener {
 		}
 		// If the player forgot to unvanish before signing out, unvanish them now.
 		if (PlayerSuite.modmodedb.containsKey(e.getPlayer().getName())) {
-			e.getPlayer().sendMessage("§cYou have been removed from Moderator Mode.");
+			e.getPlayer().sendMessage("Â§cYou have been removed from Moderator Mode.");
 			e.getPlayer().teleport(PlayerSuite.modmodedb.get(e.getPlayer().getName()));
 		}
 
@@ -114,14 +111,14 @@ public class PlayerListener implements Listener {
 			if (event.getPlayer().hasPermission("eb.loginlimit.bypass")) {
 				event.allow();
 			} else {
-				event.setKickMessage("§cThe Server is Full!");
+				event.setKickMessage("Â§cThe Server is Full!");
 			}
 			// If Maintenance Mode is on, kick the player if they do not have permission.
 		} if (PlayerSuite.maintenanceon) {
 			if (event.getPlayer().isOp() || (event.getPlayer().hasPermission("eb.maintenance.safe"))) {
-				event.getPlayer().sendMessage("§aThis server is undergoing maintenance mode.");
+				event.getPlayer().sendMessage("Â§aThis server is undergoing maintenance mode.");
 			} else {
-				event.disallow(Result.KICK_OTHER, "§aYou can't join while the server is in maintenance mode.");
+				event.disallow(Result.KICK_OTHER, "Â§aYou can't join while the server is in maintenance mode.");
 			}
 		}
 	}
@@ -199,11 +196,9 @@ public class PlayerListener implements Listener {
 		}
 		String sPlayer = player.getName();
 		players = event.getRecipients();
-		Player[] playersOnline = Bukkit.getOnlinePlayers();
-		Player tempPlayer = null;
+		Collection<? extends Player> playersOnline = Bukkit.getOnlinePlayers();
 		String sTempPlayer = "";
-		for (int i = 0; i < playersOnline.length; i++) {
-			tempPlayer = playersOnline[i];
+		for (Player tempPlayer : playersOnline) {
 			if (tempPlayer != player) {
 				sTempPlayer = tempPlayer.getName().toLowerCase();
 				if (plugin.getConfig().getStringList("players." + sTempPlayer + ".ignoring") != null) {

@@ -36,7 +36,7 @@ public class WorldSuite {
 			public boolean onCommand(CommandSender s, Command c, String label, String[] args) {
 				if (!(s instanceof Player)) return false;
 				if (!s.hasPermission("eb.chunkfix")) {
-					s.sendMessage("§cYou don't have permission to do that!");
+					s.sendMessage("Â§cYou don't have permission to do that!");
 				} else {
 					final ArrayList<Chunk> chunks = new ArrayList();
 					final Player p = ((Player) s);
@@ -54,7 +54,7 @@ public class WorldSuite {
 								}
 							}
 						} catch (NumberFormatException e) {
-							s.sendMessage("§7" + args[0] + "§c is not a valid number.");
+							s.sendMessage("Â§7" + args[0] + "Â§c is not a valid number.");
 							return true;
 						}
 					} else {
@@ -67,7 +67,7 @@ public class WorldSuite {
 							op++;
 					}
 
-					s.sendMessage("§aRefreshed§e " + op + " §achunks");
+					s.sendMessage("Â§aRefreshedÂ§e " + op + " Â§achunks");
 					return true;
 				} return true;
 			}
@@ -78,11 +78,11 @@ public class WorldSuite {
 			public boolean onCommand(CommandSender s, Command c, String label, String[] args) {
 				if (!(s instanceof Player)) return false;
 				if (!s.hasPermission("eb.setspawn")) {
-					s.sendMessage("§cYou don't have permission to do that!");
+					s.sendMessage("Â§cYou don't have permission to do that!");
 				} else {
 					final Location newspawn = ((Player) s).getLocation();
 					newspawn.getWorld().setSpawnLocation(newspawn.getBlockX(), newspawn.getBlockY(), newspawn.getBlockZ());
-					s.sendMessage("§aSet spawn of§e " + newspawn.getWorld().getName());
+					s.sendMessage("Â§aSet spawn ofÂ§e " + newspawn.getWorld().getName());
 					return true;
 				} return true;
 			} 
@@ -93,20 +93,20 @@ public class WorldSuite {
 			public boolean onCommand(CommandSender s, Command c, String label, String[] args) {
 				if (!(s instanceof Player)) return false;
 				if (args.length < 2) {
-					s.sendMessage("§cNot enough arguments.");
+					s.sendMessage("Â§cNot enough arguments.");
 				}
 				if (!s.hasPermission("eb.spawnmob")) {
-					s.sendMessage("§cYou don't have permission to do that!");
+					s.sendMessage("Â§cYou don't have permission to do that!");
 				} else {
 					final EntityType et = EntityType.fromName(args[0]);
 					if (et == null || (!et.isSpawnable() || !et.isAlive())) {
 						String types = "";
 						for (EntityType ett : EntityType.values()) {
 							if (!ett.isAlive() || !ett.isSpawnable()) continue;
-							if (!types.isEmpty()) types += "§a, ";
-							types += "§e" + ett.getName();
+							if (!types.isEmpty()) types += "Â§a, ";
+							types += "Â§e" + ett.getName();
 						}
-						s.sendMessage("§aValid mob types: " + types);
+						s.sendMessage("Â§aValid mob types: " + types);
 						return true;
 					}
 
@@ -117,7 +117,7 @@ public class WorldSuite {
 						return false;
 					}
 
-					s.sendMessage("§aSpawned§e " + amount + "§a " + et.getName());
+					s.sendMessage("Â§aSpawnedÂ§e " + amount + "Â§a " + et.getName());
 					while (amount != 0) {
 						((Player) s).getWorld().spawnEntity(((Player) s).getLocation(), et);
 						--amount;
@@ -132,16 +132,16 @@ public class WorldSuite {
 			@Override
 			public boolean onCommand(CommandSender s, Command c, String label, String[] args) {
 				if (args.length < 1) {
-					s.sendMessage("§cNot enough arguments.");
+					s.sendMessage("Â§cNot enough arguments.");
 				}
 				if (!s.hasPermission("eb.weather")) {
-					s.sendMessage("§cYou don't have permission to do that!");
+					s.sendMessage("Â§cYou don't have permission to do that!");
 				} else {
 					final World w;
 					if (args.length >= 2) {
 						w = Bukkit.getWorld(args[1]);
 						if (w == null) {
-							s.sendMessage("§cThat world doesn't exist!");
+							s.sendMessage("Â§cThat world doesn't exist!");
 						}
 					} else {
 						if (!(s instanceof Player)) return false;
@@ -159,10 +159,10 @@ public class WorldSuite {
 						w.setThundering(true);
 						break;
 					default:
-						s.sendMessage("§cInvalid weather state.");
+						s.sendMessage("Â§cInvalid weather state.");
 						return true;
 					}
-					s.sendMessage("§aSet the weather in§e " + w.getName() + " §ato§e " + args[0]);
+					s.sendMessage("Â§aSet the weather inÂ§e " + w.getName() + " Â§atoÂ§e " + args[0]);
 					return true;
 				} return true;
 			}

@@ -51,8 +51,8 @@ public final class Utils {
 		StringBuilder sb = new StringBuilder();
 		for (Enchantment ench : Enchantment.values()) {
 			if (iss != null && !ench.canEnchantItem(iss)) continue;
-			if (sb.length() != 0) sb.append("§a,§e ");
-			sb.append("§e").append(ench.getName().toLowerCase());
+			if (sb.length() != 0) sb.append("Â§a,Â§e ");
+			sb.append("Â§e").append(ench.getName().toLowerCase());
 		}
 		return sb.toString();
 	}

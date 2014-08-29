@@ -50,7 +50,7 @@ public class MessagingSuite {
 			@Override
 			public boolean onCommand(CommandSender s, Command c, String label, String[] args) {
 				if (!s.hasPermission("eb.motd")) {
-					s.sendMessage("§cYou don't have permission to do that!");
+					s.sendMessage("Â§cYou don't have permission to do that!");
 				} else {
 					for (String mess : plugin.getConfig().getStringList("messaging.motd")) {
 						mess = mess.replace("<name>", s.getName());
@@ -67,29 +67,29 @@ public class MessagingSuite {
 			@Override
 			public boolean onCommand(CommandSender s, Command c, String label, String[] args) {
 				if (!s.hasPermission("eb.msg")) {
-					s.sendMessage("§cYou don't have permission to do that!");
+					s.sendMessage("Â§cYou don't have permission to do that!");
 					return true;
 				} if (args.length < 2) {
-					s.sendMessage("§3Proper Usage: §6/msg [Player] [Message]");
+					s.sendMessage("Â§3Proper Usage: Â§6/msg [Player] [Message]");
 					return true;
 				} else {
 					final Player r = Bukkit.getPlayer(args[0]);
 					if (r == null) {
-						s.sendMessage("§cThat player is not online!");
+						s.sendMessage("Â§cThat player is not online!");
 						return true;
 					}
 					if (plugin.getConfig().getStringList("players." + s.getName().toLowerCase() + ".ignoring").contains(r.getName().toLowerCase())) {
-						s.sendMessage("§cYou can't send a Private Message because you have ignored this player.");
+						s.sendMessage("Â§cYou can't send a Private Message because you have ignored this player.");
 						return true;
 					}
 					ignoring = plugin.getConfig().getStringList("players." + r.getName().toLowerCase() + ".ignoring");
 					if (ignoring.contains(s.getName().toLowerCase())) {
-						s.sendMessage("§cYou can't send a Private Message because this player has ignored you.");
+						s.sendMessage("Â§cYou can't send a Private Message because this player has ignored you.");
 						return true;
 					}
 					final String message = Strings.buildString(args, 1, " ");
-					s.sendMessage("§a[§7You§a -> §7" + r.getName() + "§a] §e" + message);
-					r.sendMessage("§a[§7" + s.getName() + "§a -> §7You§a] §e" + message);
+					s.sendMessage("Â§a[Â§7YouÂ§a -> Â§7" + r.getName() + "Â§a] Â§e" + message);
+					r.sendMessage("Â§a[Â§7" + s.getName() + "Â§a -> Â§7YouÂ§a] Â§e" + message);
 					EtriaBending.log.info(String.format("[PM][%1$s -> %2$s] %3$s", s.getName(), r.getName(), message));
 
 					chatterDb.put(s, r);
@@ -97,7 +97,7 @@ public class MessagingSuite {
 
 					for(Player player: Bukkit.getOnlinePlayers()) {
 						if ((player.hasPermission("eb.msg.spy"))) {
-							player.sendMessage("§d[Spy][§4" + s.getName() + "§d -> §4" + r.getName() + "§d] §d" + message);
+							player.sendMessage("Â§d[Spy][Â§4" + s.getName() + "Â§d -> Â§4" + r.getName() + "Â§d] Â§d" + message);
 						}
 					}
 					return true;
@@ -109,37 +109,37 @@ public class MessagingSuite {
 			@Override
 			public boolean onCommand(CommandSender s, Command c, String label, String[] args) {
 				if (!s.hasPermission("eb.reply")) {
-					s.sendMessage("§cYou don't have permission to do that!");
+					s.sendMessage("Â§cYou don't have permission to do that!");
 					return true;
 				} else {
 					if (!chatterDb.containsKey(s)) {
-						s.sendMessage("§cYou have no one to reply to!");
+						s.sendMessage("Â§cYou have no one to reply to!");
 					} else {
 						final CommandSender r = chatterDb.get(s);
 						if (!Bukkit.getOfflinePlayer(r.getName()).isOnline()) {
-							s.sendMessage("§7" + r.getName() + " §cis no longer online!");
+							s.sendMessage("Â§7" + r.getName() + " Â§cis no longer online!");
 							return true;
 						}
 						if (plugin.getConfig().getStringList("players." + s.getName().toLowerCase() + ".ignoring").contains(r.getName().toLowerCase())) {
-							s.sendMessage("§cYou can't send a Private Message because you have ignored this player.");
+							s.sendMessage("Â§cYou can't send a Private Message because you have ignored this player.");
 							return true;
 						}
 						ignoring = plugin.getConfig().getStringList("players." + r.getName().toLowerCase() + ".ignoring");
 						if (ignoring.contains(s.getName().toLowerCase())) {
-							s.sendMessage("§cYou can't send a Private Message because this player has ignored you.");
+							s.sendMessage("Â§cYou can't send a Private Message because this player has ignored you.");
 							return true;
 						}
 						final String message = Strings.buildString(args, 0, " ");
 
-						s.sendMessage("§a[§7You§a -> §7" + r.getName() + "§a] §e" + message);
-						r.sendMessage("§a[§7" + s.getName() + "§a -> §7You§a] §e" + message);
+						s.sendMessage("Â§a[Â§7YouÂ§a -> Â§7" + r.getName() + "Â§a] Â§e" + message);
+						r.sendMessage("Â§a[Â§7" + s.getName() + "Â§a -> Â§7YouÂ§a] Â§e" + message);
 						EtriaBending.log.info(String.format("[PM][%1$s -> %2$s] %3$s", s.getName(), r.getName(), message));
 
 						chatterDb.put(r, s);
 
 						for(Player player: Bukkit.getOnlinePlayers()) {
 							if ((player.hasPermission("eb.msg.spy"))) {
-								player.sendMessage("§d[Spy][§4" + s.getName() + "§d -> §4" + r.getName() + "§d] §d" + message);
+								player.sendMessage("Â§d[Spy][Â§4" + s.getName() + "Â§d -> Â§4" + r.getName() + "Â§d] Â§d" + message);
 							}
 						}
 						return true;
@@ -155,7 +155,7 @@ public class MessagingSuite {
 			public boolean onCommand(CommandSender s, Command c, String label, String[] args) {
 				if (args.length < 1) return false;
 				if (!s.hasPermission("eb.modchat")) {
-					s.sendMessage("§cYou don't have permission to do that!");
+					s.sendMessage("Â§cYou don't have permission to do that!");
 					return true;
 				} else {
 					String format = plugin.getConfig().getString("messaging.modchat");
@@ -176,29 +176,29 @@ public class MessagingSuite {
 			public boolean onCommand(CommandSender s, Command c, String label, String[] args) {
 
 				if (args.length == 0) {
-					s.sendMessage("§3Proper Usage:§6 /ignore [Player]");
+					s.sendMessage("Â§3Proper Usage:Â§6 /ignore [Player]");
 					return true;
 				}
 				if (!s.hasPermission("eb.ignore.use")) {
-					s.sendMessage("§cYou don't have permission to do that!");
+					s.sendMessage("Â§cYou don't have permission to do that!");
 					return true;
 				}
 				if (s.hasPermission("eb.ignore.bypass")) {
-					s.sendMessage("§cYou are not allowed to ignore other players.");
-					s.sendMessage("§cThis is probably because you're a staff member.");
+					s.sendMessage("Â§cYou are not allowed to ignore other players.");
+					s.sendMessage("Â§cThis is probably because you're a staff member.");
 					return true;
 				}
 				Player p = plugin.getServer().getPlayer(args[0]);
 				if (p == null) {
-					s.sendMessage("§cThis player is not online.");
+					s.sendMessage("Â§cThis player is not online.");
 					return true;
 				}
 				if (s == p) {
-					s.sendMessage("§cYou can't ignore yourself.");
+					s.sendMessage("Â§cYou can't ignore yourself.");
 					return true;
 				}
 				if (p.hasPermission("eb.ignore.bypass")) {
-					s.sendMessage("§cYou are not allowed to ignore §3" + p.getName());
+					s.sendMessage("Â§cYou are not allowed to ignore Â§3" + p.getName());
 					return true;
 				}
 				String lowerPlayer = s.getName().toLowerCase();
@@ -207,7 +207,7 @@ public class MessagingSuite {
 					ignoring.add(args[0].toLowerCase());
 					plugin.getConfig().set("players." + lowerPlayer + ".ignoring", ignoring);
 					plugin.saveConfig();
-					s.sendMessage("§bYou are now ignoring §3" + args[0]);
+					s.sendMessage("Â§bYou are now ignoring Â§3" + args[0]);
 					return true;
 				}
 				ignoring = plugin.getConfig().getStringList("players." + lowerPlayer + ".ignoring");
@@ -215,14 +215,14 @@ public class MessagingSuite {
 					ignoring.add(args[0].toLowerCase());
 					plugin.getConfig().set("players." + lowerPlayer + ".ignoring", ignoring);
 					plugin.saveConfig();
-					s.sendMessage("§bYou are now ignoring §3" + args[0]);
+					s.sendMessage("Â§bYou are now ignoring Â§3" + args[0]);
 					return true;
 				}
 				if (ignoring.contains(args[0].toLowerCase())) {
 					ignoring.remove(args[0].toLowerCase());
 					plugin.getConfig().set("players." + lowerPlayer + ".ignoring", ignoring);
 					plugin.saveConfig();
-					s.sendMessage("§cYou are no longer ignoring §3" + args[0]);
+					s.sendMessage("Â§cYou are no longer ignoring Â§3" + args[0]);
 					return true;
 				}
 				return true;
@@ -232,12 +232,12 @@ public class MessagingSuite {
 		exe = new CommandExecutor() {
 			public boolean onCommand(CommandSender s, Command c, String label, String[] args) {
 				if (!s.hasPermission("eb.ignore.use")) {
-					s.sendMessage("§cYou don't have permission to do that.");
+					s.sendMessage("Â§cYou don't have permission to do that.");
 					return true;
 				}
 				String lowerPlayer = s.getName().toLowerCase();
 				if (plugin.getConfig().get("players." + lowerPlayer + ".ignoring") == null) {
-					s.sendMessage("§bYou are not ignoring anyone.");
+					s.sendMessage("Â§bYou are not ignoring anyone.");
 					return true;
 				}
 				List<String> ignored = plugin.getConfig().getStringList("players." + lowerPlayer + ".ignoring");
@@ -245,7 +245,7 @@ public class MessagingSuite {
 				for (String p : ignored) {
 					message = message + " " + p;
 				}
-				s.sendMessage("§b" + message);
+				s.sendMessage("Â§b" + message);
 				return true;
 			}
 		}; ignorelist.setExecutor(exe);
